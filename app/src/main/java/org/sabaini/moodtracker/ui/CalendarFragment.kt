@@ -2,11 +2,14 @@ package org.sabaini.moodtracker.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.kizitonwose.calendarview.model.CalendarDay
 import com.kizitonwose.calendarview.model.CalendarMonth
@@ -17,6 +20,7 @@ import com.kizitonwose.calendarview.ui.ViewContainer
 import org.sabaini.moodtracker.R
 import org.sabaini.moodtracker.databinding.FragmentCalendarBinding
 import org.sabaini.moodtracker.viewmodel.CalendarViewModel
+import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.temporal.WeekFields
@@ -41,7 +45,7 @@ class CalendarFragment : Fragment() {
 
         binding.viewModel = viewModel
 
-        val firstDayOfWeek = WeekFields.of(Locale.getDefault()).firstDayOfWeek
+        val firstDayOfWeek = DayOfWeek.MONDAY
 
         binding.calendarView.setup(
             YearMonth.now().minusMonths(3),
@@ -88,22 +92,29 @@ class CalendarFragment : Fragment() {
                     textView.visibility = View.VISIBLE
                     when (day.date) {
                         selectedDate -> {
-                            textView.setTextColor(R.color.white)
-                            textView.setBackgroundResource(R.drawable.day_selected_background)
+                            if (day.date == today) {
+                                Log.d("teste", "Today!")
+                            }
                         }
                         today -> {
-                            textView.setTextColor(R.color.red)
-                            textView.background = null
+                            textView.setTextColor(ContextCompat.getColor(context!!,R.color.ink))
+                            textView.setBackgroundResource(R.drawable.day_selected_background)
                         }
                         else -> {
-                            textView.setTextColor(R.color.black)
-                            textView.background = null
+                            textView.setTextColor(ContextCompat.getColor(context!!,R.color.ink))
+                            textView.setBackgroundResource(R.drawable.day_background)
                         }
                     }
+
+                    val dayOfWeek = day.date.dayOfWeek
+                    if (dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) {
+                        textView.setTextColor(ContextCompat.getColor(context!!,R.color.red))
+                        textView.setBackgroundResource(R.drawable.day_weekend_background)
+                    }
+
                 } else {
                     textView.visibility = View.INVISIBLE
                 }
-
             }
         }
 
