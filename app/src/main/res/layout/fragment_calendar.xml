@@ -15,6 +15,53 @@
         android:layout_height="match_parent"
         tools:context=".ui.CalendarFragment">
 
+        <RelativeLayout
+            android:id="@+id/yearChanger"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@id/calendarView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/previousYear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:background="@null"
+                android:paddingLeft="16dp"
+                android:src="@drawable/navigate_before"
+                android:tint="@color/ink" />
+
+            <TextView
+                android:id="@+id/currentYear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:text="2021"
+                android:textColor="@color/ink"
+                android:textSize="26sp"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/nextYear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:background="@null"
+                android:paddingRight="16dp"
+                android:src="@drawable/navigate_next"
+                android:tint="@color/ink" />
+
+
+        </RelativeLayout>
+
         <com.kizitonwose.calendarview.CalendarView
             android:id="@+id/calendarView"
             android:layout_width="0dp"
@@ -25,7 +72,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/yearChanger" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
