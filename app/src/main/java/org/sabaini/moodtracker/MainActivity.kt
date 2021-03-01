@@ -2,6 +2,8 @@ package org.sabaini.moodtracker
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.emoji.bundled.BundledEmojiCompatConfig
+import androidx.emoji.text.EmojiCompat
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
@@ -27,5 +29,9 @@ class MainActivity : AppCompatActivity() {
         findViewById<BottomNavigationView>(R.id.bottom_navigation).setupWithNavController(
             navController
         )
+
+        // Configure EmojiCompat
+        val config = BundledEmojiCompatConfig(this)
+        EmojiCompat.init(config)
     }
 }

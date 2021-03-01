@@ -3,13 +3,14 @@ package org.sabaini.moodtracker.ui
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
+import android.view.*
 import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
+import androidx.annotation.MenuRes
+import androidx.appcompat.widget.ListPopupWindow
 import androidx.core.content.ContextCompat
+import androidx.emoji.text.EmojiCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.kizitonwose.calendarview.CalendarView
 import com.kizitonwose.calendarview.model.CalendarDay
@@ -25,8 +26,8 @@ import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.Year
 import java.time.YearMonth
-import java.time.temporal.WeekFields
 import java.util.*
+
 
 class CalendarFragment : Fragment() {
 
@@ -37,6 +38,24 @@ class CalendarFragment : Fragment() {
     private var selectedDate: LocalDate? = null
     private val today = LocalDate.now()
     private var displayYear = Year.now()
+
+    private val emojisList = listOf(
+        0x1F622,
+        0x1F641,
+        0x1F610,
+        0x1F642,
+        0x1F601,
+        0x1F634,
+        0x1F60D,
+        0x1F92A,
+        0x1F973,
+        0x1F60E,
+        0x1F631,
+        0x1F912,
+        0x1F92F,
+        0x1F620,
+        0x1F92C
+    )
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -72,14 +91,11 @@ class CalendarFragment : Fragment() {
             init {
                 textView.setOnClickListener {
                     if (day.owner == DayOwner.THIS_MONTH) {
-                        if (selectedDate == day.date) {
-                            selectedDate = null
-                            binding.calendarView.notifyDayChanged(day)
-                        } else {
-                            val oldDate = selectedDate
+                        if (selectedDate == null) {
                             selectedDate = day.date
-                            binding.calendarView.notifyDateChanged(day.date)
-                            oldDate?.let { binding.calendarView.notifyDateChanged(oldDate) }
+                        }
+                        if (selectedDate == day.date) {
+                            showMenu(textView)
                         }
                     }
                 }
@@ -100,9 +116,8 @@ class CalendarFragment : Fragment() {
                     textView.visibility = View.VISIBLE
                     when (day.date) {
                         selectedDate -> {
-                            if (day.date == today) {
-                                Log.d("teste", "Today!")
-                            }
+                            textView.setTextColor(ContextCompat.getColor(context!!, R.color.ink))
+                            textView.setBackgroundResource(R.drawable.day_selected_background)
                         }
                         today -> {
                             textView.setTextColor(ContextCompat.getColor(context!!, R.color.ink))
@@ -157,5 +172,29 @@ class CalendarFragment : Fragment() {
         if (displayYear.value == YearMonth.now().year) {
             calendar.scrollToMonth(YearMonth.now())
         }
+    }
+
+    private fun showMenu(v: View) {
+        val popup = PopupMenu(context, v)
+
+        emojisList.forEach {
+            popup.menu.add(EmojiCompat.get().process(getEmoji(it)))
+        }
+
+        popup.setOnMenuItemClickListener { menuItem: MenuItem ->
+            Toast.makeText(context, "click", Toast.LENGTH_LONG).show()
+            true
+        }
+
+        popup.setOnDismissListener {
+            // Respond to popup being dismissed.
+        }
+
+        // Show the popup menu.
+        popup.show()
+    }
+
+    fun getEmoji(unicode: Int): String {
+        return String(Character.toChars(unicode))
     }
 }
