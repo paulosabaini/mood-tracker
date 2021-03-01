@@ -6,8 +6,6 @@ import android.util.Log
 import android.view.*
 import android.view.LayoutInflater
 import android.widget.*
-import androidx.annotation.MenuRes
-import androidx.appcompat.widget.ListPopupWindow
 import androidx.core.content.ContextCompat
 import androidx.emoji.text.EmojiCompat
 import androidx.fragment.app.Fragment
@@ -182,7 +180,7 @@ class CalendarFragment : Fragment() {
         }
 
         popup.setOnMenuItemClickListener { menuItem: MenuItem ->
-            Toast.makeText(context, "click", Toast.LENGTH_LONG).show()
+            (v as TextView).text = menuItem.title
             true
         }
 
