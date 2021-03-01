@@ -32,9 +32,9 @@
                 android:id="@+id/previousYear"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:background="@null"
-                android:paddingLeft="16dp"
+                android:paddingStart="16dp"
                 android:src="@drawable/navigate_before"
                 android:tint="@color/ink" />
 
@@ -44,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:text="2021"
+                android:text="@{Integer.toString(viewModel.displayYear.value)}"
                 android:textColor="@color/ink"
                 android:textSize="26sp"
                 android:textStyle="bold" />
@@ -53,12 +53,11 @@
                 android:id="@+id/nextYear"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:background="@null"
-                android:paddingRight="16dp"
+                android:paddingEnd="16dp"
                 android:src="@drawable/navigate_next"
                 android:tint="@color/ink" />
-
 
         </RelativeLayout>
 

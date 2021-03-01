@@ -21,8 +21,6 @@ import org.sabaini.moodtracker.R
 import org.sabaini.moodtracker.databinding.FragmentCalendarBinding
 import org.sabaini.moodtracker.viewmodel.CalendarViewModel
 import java.time.DayOfWeek
-import java.time.LocalDate
-import java.time.Year
 import java.time.YearMonth
 import java.util.*
 
@@ -32,28 +30,6 @@ class CalendarFragment : Fragment() {
     private val viewModel: CalendarViewModel by lazy {
         ViewModelProvider(this).get(CalendarViewModel::class.java)
     }
-
-    private var selectedDate: LocalDate? = null
-    private val today = LocalDate.now()
-    private var displayYear = Year.now()
-
-    private val emojisList = listOf(
-        0x1F622,
-        0x1F641,
-        0x1F610,
-        0x1F642,
-        0x1F601,
-        0x1F634,
-        0x1F60D,
-        0x1F92A,
-        0x1F973,
-        0x1F60E,
-        0x1F631,
-        0x1F912,
-        0x1F92F,
-        0x1F620,
-        0x1F92C
-    )
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -65,34 +41,38 @@ class CalendarFragment : Fragment() {
 
         binding.viewModel = viewModel
 
+        // Start the calendar
         setupCalendar(binding.calendarView)
 
+        // Set the calendar to the previous year
         binding.previousYear.setOnClickListener {
-            displayYear = displayYear.minusYears(1)
-            binding.currentYear.text = displayYear.value.toString()
+            viewModel.decrementDisplayYear()
             setupCalendar(binding.calendarView)
         }
 
+        // Set the calendar to the next year
         binding.nextYear.setOnClickListener {
-            displayYear = displayYear.plusYears(1)
-            binding.currentYear.text = displayYear.value.toString()
+            viewModel.incrementDisplayYear()
             setupCalendar(binding.calendarView)
         }
 
         /*
-         * Set Calendar Days
+         * Create the view container which acts as a view holder for each date cell.
+         * The view passed in here is the inflated day view resource calendar_day_layout.xml.
          */
         class DayViewContainer(view: View) : ViewContainer(view) {
+            // Will be set when this container is bound. See the dayBinder.
             lateinit var day: CalendarDay
+
             val textView = view.findViewById<TextView>(R.id.calendarDayText)
 
             init {
                 textView.setOnClickListener {
                     if (day.owner == DayOwner.THIS_MONTH) {
-                        if (selectedDate == null) {
-                            selectedDate = day.date
+                        if (viewModel.selectedDate.value == null) {
+                            viewModel.updateSelectedDate(day.date)
                         }
-                        if (selectedDate == day.date) {
+                        if (viewModel.selectedDate.value == day.date) {
                             showMenu(textView)
                         }
                     }
@@ -100,6 +80,9 @@ class CalendarFragment : Fragment() {
             }
         }
 
+        /*
+         * Provide a DayBinder for the CalendarView using your DayViewContainer type.
+         */
         binding.calendarView.dayBinder = object : DayBinder<DayViewContainer> {
             // Called only when a new container is needed.
             override fun create(view: View) = DayViewContainer(view)
@@ -113,11 +96,11 @@ class CalendarFragment : Fragment() {
                 if (day.owner == DayOwner.THIS_MONTH) {
                     textView.visibility = View.VISIBLE
                     when (day.date) {
-                        selectedDate -> {
+                        viewModel.selectedDate.value -> {
                             textView.setTextColor(ContextCompat.getColor(context!!, R.color.ink))
                             textView.setBackgroundResource(R.drawable.day_selected_background)
                         }
-                        today -> {
+                        viewModel.today.value -> {
                             textView.setTextColor(ContextCompat.getColor(context!!, R.color.ink))
                             textView.setBackgroundResource(R.drawable.day_selected_background)
                         }
@@ -140,11 +123,16 @@ class CalendarFragment : Fragment() {
         }
 
         /*
-         * Set Calendar Months
+         * Create the view container which acts as a view holder for each month header.
+         * The view passed in here is the inflated month header view resource calendar_header_layout.xml.
          */
         class MonthViewContainer(view: View) : ViewContainer(view) {
             val textView = view.findViewById<TextView>(R.id.calendarHeaderText)
         }
+
+        /*
+        * Provide a MonthHeaderFooterBinder for the CalendarView using your MonthViewContainer type.
+        */
         binding.calendarView.monthHeaderBinder =
             object : MonthHeaderFooterBinder<MonthViewContainer> {
 
@@ -156,26 +144,33 @@ class CalendarFragment : Fragment() {
                         month.yearMonth.month.name.toUpperCase(Locale.getDefault())
                 }
             }
-
-
         return binding.root
     }
 
+    /*
+    * Setup the Calendar View
+    */
     private fun setupCalendar(calendar: CalendarView) {
+        val year = viewModel.displayYear.value
+
         calendar.setup(
-            YearMonth.of(displayYear.value, 1),
-            YearMonth.of(displayYear.value, 12),
+            YearMonth.of(year!!.value, 1),
+            YearMonth.of(year.value, 12),
             DayOfWeek.MONDAY
         )
-        if (displayYear.value == YearMonth.now().year) {
+
+        if (year.value == YearMonth.now().year) {
             calendar.scrollToMonth(YearMonth.now())
         }
     }
 
+    /*
+    * Display a popup menu with emojis that can be selected
+    */
     private fun showMenu(v: View) {
         val popup = PopupMenu(context, v)
 
-        emojisList.forEach {
+        viewModel.emojiList.value!!.forEach {
             popup.menu.add(EmojiCompat.get().process(getEmoji(it)))
         }
 
@@ -192,6 +187,9 @@ class CalendarFragment : Fragment() {
         popup.show()
     }
 
+    /*
+    * Convert a Int unicode emoji to String
+    */
     fun getEmoji(unicode: Int): String {
         return String(Character.toChars(unicode))
     }
