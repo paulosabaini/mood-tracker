@@ -27,7 +27,8 @@ import java.util.*
 class CalendarFragment : Fragment() {
 
     private val viewModel: CalendarViewModel by lazy {
-        ViewModelProvider(this).get(CalendarViewModel::class.java)
+        val activity = requireNotNull(this.activity)
+        ViewModelProvider(this, CalendarViewModel.Factory(activity.application)).get(CalendarViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -181,11 +182,12 @@ class CalendarFragment : Fragment() {
         val popup = PopupMenu(context, v)
 
         viewModel.emojiList.value!!.forEach {
-            popup.menu.add(EmojiCompat.get().process(getEmoji(it)))
+            popup.menu.add(EmojiCompat.get().process(it))
         }
 
         popup.setOnMenuItemClickListener { menuItem: MenuItem ->
             (v as TextView).text = menuItem.title
+            viewModel.saveMood(menuItem.title)
             true
         }
 
