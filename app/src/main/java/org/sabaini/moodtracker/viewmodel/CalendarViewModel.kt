@@ -28,6 +28,7 @@ class CalendarViewModel : ViewModel() {
     init {
         _today.value = LocalDate.now()
         _displayYear.value = Year.now()
+        _selectedDate.value = LocalDate.now()
         _emojisList.value = listOf(
             0x1F622,
             0x1F641,
@@ -55,7 +56,7 @@ class CalendarViewModel : ViewModel() {
         _displayYear.value = _displayYear.value!!.plusYears(1L)
     }
 
-    fun updateSelectedDate(date: LocalDate) {
+    fun updateSelectedDate(date: LocalDate?) {
         _selectedDate.value = date
     }
 }

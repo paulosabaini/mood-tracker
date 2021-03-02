@@ -68,10 +68,8 @@ class CalendarFragment : Fragment() {
 
             init {
                 textView.setOnClickListener {
+                    // Check the day owner as we do not want to select in or out dates.
                     if (day.owner == DayOwner.THIS_MONTH) {
-                        if (viewModel.selectedDate.value == null) {
-                            viewModel.updateSelectedDate(day.date)
-                        }
                         if (viewModel.selectedDate.value == day.date) {
                             showMenu(textView)
                         }
@@ -83,44 +81,56 @@ class CalendarFragment : Fragment() {
         /*
          * Provide a DayBinder for the CalendarView using your DayViewContainer type.
          */
-        binding.calendarView.dayBinder = object : DayBinder<DayViewContainer> {
-            // Called only when a new container is needed.
-            override fun create(view: View) = DayViewContainer(view)
+        binding.calendarView.dayBinder =
+            object : DayBinder<DayViewContainer> {
+                // Called only when a new container is needed.
+                override fun create(view: View) = DayViewContainer(view)
 
-            // Called every time we need to reuse a container.
-            override fun bind(container: DayViewContainer, day: CalendarDay) {
-                container.day = day
-                val textView = container.textView
-                textView.text = day.date.dayOfMonth.toString()
+                // Called every time we need to reuse a container.
+                override fun bind(container: DayViewContainer, day: CalendarDay) {
+                    container.day = day
+                    val textView = container.textView
+                    textView.text = day.date.dayOfMonth.toString()
 
-                if (day.owner == DayOwner.THIS_MONTH) {
-                    textView.visibility = View.VISIBLE
-                    when (day.date) {
-                        viewModel.selectedDate.value -> {
-                            textView.setTextColor(ContextCompat.getColor(context!!, R.color.ink))
-                            textView.setBackgroundResource(R.drawable.day_selected_background)
+                    if (day.owner == DayOwner.THIS_MONTH) {
+                        textView.visibility = View.VISIBLE
+                        when (day.date) {
+                            viewModel.today.value -> {
+                                textView.setTextColor(
+                                    ContextCompat.getColor(
+                                        context!!,
+                                        R.color.ink
+                                    )
+                                )
+                                textView.setBackgroundResource(R.drawable.day_selected_background)
+                            }
+                            else -> {
+                                textView.setTextColor(
+                                    ContextCompat.getColor(
+                                        context!!,
+                                        R.color.ink
+                                    )
+                                )
+                                textView.setBackgroundResource(R.drawable.day_background)
+                            }
                         }
-                        viewModel.today.value -> {
-                            textView.setTextColor(ContextCompat.getColor(context!!, R.color.ink))
-                            textView.setBackgroundResource(R.drawable.day_selected_background)
+
+                        val dayOfWeek = day.date.dayOfWeek
+                        if (dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) {
+                            textView.setTextColor(
+                                ContextCompat.getColor(
+                                    context!!,
+                                    R.color.red
+                                )
+                            )
+                            textView.setBackgroundResource(R.drawable.day_weekend_background)
                         }
-                        else -> {
-                            textView.setTextColor(ContextCompat.getColor(context!!, R.color.ink))
-                            textView.setBackgroundResource(R.drawable.day_background)
-                        }
+
+                    } else {
+                        textView.visibility = View.INVISIBLE
                     }
-
-                    val dayOfWeek = day.date.dayOfWeek
-                    if (dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) {
-                        textView.setTextColor(ContextCompat.getColor(context!!, R.color.red))
-                        textView.setBackgroundResource(R.drawable.day_weekend_background)
-                    }
-
-                } else {
-                    textView.visibility = View.INVISIBLE
                 }
             }
-        }
 
         /*
          * Create the view container which acts as a view holder for each month header.
