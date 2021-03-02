@@ -2,7 +2,6 @@ package org.sabaini.moodtracker.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.view.LayoutInflater
 import android.widget.*
@@ -32,9 +31,10 @@ class CalendarFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val binding = FragmentCalendarBinding.inflate(layoutInflater)
 
         binding.lifecycleOwner = this
@@ -200,7 +200,7 @@ class CalendarFragment : Fragment() {
     /*
     * Convert a Int unicode emoji to String
     */
-    fun getEmoji(unicode: Int): String {
+    private fun getEmoji(unicode: Int): String {
         return String(Character.toChars(unicode))
     }
 }

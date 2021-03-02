@@ -1,6 +1,5 @@
 package org.sabaini.moodtracker.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -54,9 +53,5 @@ class CalendarViewModel : ViewModel() {
 
     fun incrementDisplayYear() {
         _displayYear.value = _displayYear.value!!.plusYears(1L)
-    }
-
-    fun updateSelectedDate(date: LocalDate?) {
-        _selectedDate.value = date
     }
 }
