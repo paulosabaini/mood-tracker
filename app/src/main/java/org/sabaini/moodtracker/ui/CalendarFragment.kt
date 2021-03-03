@@ -71,7 +71,7 @@ class CalendarFragment : Fragment() {
                 textView.setOnClickListener {
                     // Check the day owner as we do not want to select in or out dates.
                     if (day.owner == DayOwner.THIS_MONTH) {
-                        if (viewModel.selectedDate.value == day.date) {
+                        if (viewModel.today.value == day.date) {
                             showMenu(textView)
                         }
                     }

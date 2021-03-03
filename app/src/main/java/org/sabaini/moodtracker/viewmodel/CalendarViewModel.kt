@@ -14,10 +14,6 @@ class CalendarViewModel(application: Application) : ViewModel() {
     private val database = getDatabase(application)
     private val memesRepository = MoodTrackerRepository(database)
 
-    private val _selectedDate = MutableLiveData<LocalDate>()
-    val selectedDate: LiveData<LocalDate>
-        get() = _selectedDate
-
     private val _today = MutableLiveData<LocalDate>()
     val today: LiveData<LocalDate>
         get() = _today
@@ -33,7 +29,6 @@ class CalendarViewModel(application: Application) : ViewModel() {
     init {
         _today.value = LocalDate.now()
         _displayYear.value = Year.now()
-        _selectedDate.value = LocalDate.now()
 //        _emojisList.value = listOf(
 //            0x1F622,
 //            0x1F641,
@@ -80,7 +75,7 @@ class CalendarViewModel(application: Application) : ViewModel() {
 
     fun saveMood(mood: CharSequence) {
         viewModelScope.launch {
-            memesRepository.insertMood(_selectedDate.value!!, mood)
+            memesRepository.insertMood(_today.value!!, mood)
         }
     }
 
