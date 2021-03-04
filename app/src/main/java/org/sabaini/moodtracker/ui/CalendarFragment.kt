@@ -2,6 +2,7 @@ package org.sabaini.moodtracker.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.view.LayoutInflater
 import android.widget.*
@@ -28,7 +29,9 @@ class CalendarFragment : Fragment() {
 
     private val viewModel: CalendarViewModel by lazy {
         val activity = requireNotNull(this.activity)
-        ViewModelProvider(this, CalendarViewModel.Factory(activity.application)).get(CalendarViewModel::class.java)
+        ViewModelProvider(this, CalendarViewModel.Factory(activity.application)).get(
+            CalendarViewModel::class.java
+        )
     }
 
     override fun onCreateView(
@@ -93,6 +96,16 @@ class CalendarFragment : Fragment() {
                     val textView = container.textView
                     textView.text = day.date.dayOfMonth.toString()
 
+                    viewModel.moods.observe(
+                        viewLifecycleOwner,
+                        androidx.lifecycle.Observer { moods ->
+                            val moods = viewModel.filterMoods()
+                            val mood = moods.find { mood -> day.date.toEpochDay() == mood.date }
+                            if (mood != null) {
+                                textView.text = mood.mood
+                            }
+                        })
+
                     if (day.owner == DayOwner.THIS_MONTH) {
                         textView.visibility = View.VISIBLE
                         when (day.date) {
@@ -155,6 +168,7 @@ class CalendarFragment : Fragment() {
                         month.yearMonth.month.name.toUpperCase(Locale.getDefault())
                 }
             }
+
         return binding.root
     }
 

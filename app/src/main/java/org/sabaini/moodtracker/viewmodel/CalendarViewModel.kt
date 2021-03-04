@@ -1,8 +1,10 @@
 package org.sabaini.moodtracker.viewmodel
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
+import org.sabaini.moodtracker.db.Mood
 import org.sabaini.moodtracker.db.getDatabase
 import org.sabaini.moodtracker.repository.MoodTrackerRepository
 import java.time.LocalDate
@@ -12,7 +14,7 @@ class CalendarViewModel(application: Application) : ViewModel() {
 
     /* Database and Repository variables */
     private val database = getDatabase(application)
-    private val memesRepository = MoodTrackerRepository(database)
+    private val moodTrackerRepository = MoodTrackerRepository(database)
 
     private val _today = MutableLiveData<LocalDate>()
     val today: LiveData<LocalDate>
@@ -26,26 +28,16 @@ class CalendarViewModel(application: Application) : ViewModel() {
     val emojiList: LiveData<List<String>>
         get() = _emojisList
 
+    private val _moods = MutableLiveData<List<Mood>>()
+    val moods: LiveData<List<Mood>>
+        get() = _moods
+
     init {
+        viewModelScope.launch {
+            _moods.value = moodTrackerRepository.getMoods()
+        }
         _today.value = LocalDate.now()
         _displayYear.value = Year.now()
-//        _emojisList.value = listOf(
-//            0x1F622,
-//            0x1F641,
-//            0x1F610,
-//            0x1F642,
-//            0x1F601,
-//            0x1F634,
-//            0x1F60D,
-//            0x1F92A,
-//            0x1F973,
-//            0x1F60E,
-//            0x1F631,
-//            0x1F912,
-//            0x1F92F,
-//            0x1F620,
-//            0x1F92C
-//        )
         _emojisList.value = listOf(
             "\ud83d\ude22",
             "\ud83d\ude41",
@@ -75,8 +67,21 @@ class CalendarViewModel(application: Application) : ViewModel() {
 
     fun saveMood(mood: CharSequence) {
         viewModelScope.launch {
-            memesRepository.insertMood(_today.value!!, mood)
+            if (moods.value!!.isEmpty()) {
+                moodTrackerRepository.insertMood(_today.value!!, mood)
+            } else {
+                var lastMood = moods.value!!.lastOrNull()
+                if (lastMood!!.date != _today.value!!.toEpochDay()) {
+                    moodTrackerRepository.insertMood(_today.value!!, mood)
+                } else {
+                    moodTrackerRepository.updateMood(lastMood.copy(mood = mood as String))
+                }
+            }
         }
+    }
+
+    fun filterMoods(): List<Mood> {
+        return _moods.value!!.filter { it.date >= _displayYear.value!!.atDay(1).toEpochDay() }
     }
 
     class Factory(val app: Application) : ViewModelProvider.Factory {
