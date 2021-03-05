@@ -3,6 +3,7 @@ package org.sabaini.moodtracker.ui
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
+import android.util.TypedValue
 import android.view.*
 import android.view.LayoutInflater
 import android.widget.*
@@ -103,6 +104,7 @@ class CalendarFragment : Fragment() {
                             val mood = moods.find { mood -> day.date.toEpochDay() == mood.date }
                             if (mood != null) {
                                 textView.text = mood.mood
+                                textView.setTextSize(TypedValue.COMPLEX_UNIT_SP,32f)
                             }
                         })
 
@@ -201,6 +203,7 @@ class CalendarFragment : Fragment() {
 
         popup.setOnMenuItemClickListener { menuItem: MenuItem ->
             (v as TextView).text = menuItem.title
+            v.setTextSize(TypedValue.COMPLEX_UNIT_SP,32f)
             viewModel.saveMood(menuItem.title)
             true
         }
