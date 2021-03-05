@@ -2,4 +2,8 @@
     <string name="app_name">Mood Tracker</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="week">Week</string>
+    <string name="month">Month</string>
+    <string name="year">Year</string>
+    <string name="all_the_time">All the time</string>
 </resources>

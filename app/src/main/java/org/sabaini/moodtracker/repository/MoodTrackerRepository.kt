@@ -1,17 +1,13 @@
 package org.sabaini.moodtracker.repository
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.sabaini.moodtracker.db.Mood
 import org.sabaini.moodtracker.db.MoodTrackerDb
+import org.sabaini.moodtracker.db.Statistics
 import java.lang.Exception
-import java.sql.Date
 import java.time.LocalDate
-import java.time.temporal.Temporal
-import java.time.temporal.TemporalField
 
 class MoodTrackerRepository(private val database: MoodTrackerDb) {
 
@@ -30,8 +26,8 @@ class MoodTrackerRepository(private val database: MoodTrackerDb) {
     suspend fun insertMood(date: LocalDate, mood: CharSequence) {
         withContext(Dispatchers.IO) {
             try {
-                val mood = Mood(null, date.toEpochDay(), mood as String)
-                database.moodTrackerDao.insert(mood)
+                val newMood = Mood(null, date.toEpochDay(), mood as String)
+                database.moodTrackerDao.insert(newMood)
             } catch (e: Exception) {
                 Log.d("Exception", e.toString())
             }
@@ -46,5 +42,21 @@ class MoodTrackerRepository(private val database: MoodTrackerDb) {
                 Log.d("Exception", e.toString())
             }
         }
+    }
+
+    suspend fun getStatistics(begin: Long?, end: Long?): List<Statistics>? {
+        var statistics: List<Statistics>? = null
+        withContext(Dispatchers.IO) {
+            try {
+                if (begin == null && end == null) {
+                    statistics = database.moodTrackerDao.allTimeStatistics()
+                } else {
+                    statistics = database.moodTrackerDao.periodStatistics(begin!!, end!!)
+                }
+            } catch (e: Exception) {
+                Log.d("Exception", e.toString())
+            }
+        }
+        return statistics
     }
 }

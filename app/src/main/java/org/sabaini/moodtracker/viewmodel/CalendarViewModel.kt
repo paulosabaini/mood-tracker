@@ -1,7 +1,6 @@
 package org.sabaini.moodtracker.viewmodel
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 import org.sabaini.moodtracker.db.Mood
@@ -70,13 +69,14 @@ class CalendarViewModel(application: Application) : ViewModel() {
             if (moods.value!!.isEmpty()) {
                 moodTrackerRepository.insertMood(_today.value!!, mood)
             } else {
-                var lastMood = moods.value!!.lastOrNull()
+                val lastMood = moods.value!!.lastOrNull()
                 if (lastMood!!.date != _today.value!!.toEpochDay()) {
                     moodTrackerRepository.insertMood(_today.value!!, mood)
                 } else {
                     moodTrackerRepository.updateMood(lastMood.copy(mood = mood as String))
                 }
             }
+            _moods.value = moodTrackerRepository.getMoods()
         }
     }
 
