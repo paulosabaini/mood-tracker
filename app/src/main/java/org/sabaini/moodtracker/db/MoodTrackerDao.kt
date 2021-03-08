@@ -17,7 +17,7 @@ interface MoodTrackerDao {
     @Query("select * from mood order by id")
     fun getAllMoods(): List<Mood>
 
-    @Query("select mood, count(mood) as quantity, count(mood) * 100.0 / (select count(*) from mood where date >= :begin & date <= :end) as percent from mood where date >= :begin & date <= :end group by mood order by count(mood)")
+    @Query("select mood, count(mood) as quantity, count(mood) * 100.0 / (select count(*) from mood where date >= :begin and date <= :end) as percent from mood where date >= :begin and date <= :end group by mood order by count(mood)")
     fun periodStatistics(begin: Long, end: Long): List<Statistics>
 
     @Query("select mood, count(mood) as quantity, count(mood) * 100.0 / (select count(*) from mood ) as percent from mood group by mood order by count(mood)")

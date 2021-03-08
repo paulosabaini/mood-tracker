@@ -1,6 +1,7 @@
 package org.sabaini.moodtracker.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +15,10 @@ import androidx.lifecycle.ViewModelProvider
 import org.sabaini.moodtracker.R
 import org.sabaini.moodtracker.databinding.FragmentStatisticsBinding
 import org.sabaini.moodtracker.viewmodel.StatisticsViewModel
+import java.time.DayOfWeek
 import java.time.LocalDate
+import java.time.temporal.TemporalAdjuster
+import java.time.temporal.TemporalAdjusters
 import java.time.temporal.WeekFields
 import java.util.*
 
@@ -53,10 +57,12 @@ class StatisticsFragment : Fragment() {
             val now = LocalDate.now()
             when (view.id) {
                 R.id.week_stats -> {
-                    val startOfWeek = WeekFields.of(Locale.getDefault()).dayOfWeek()
+                    val firstDayOfWeek = WeekFields.of(Locale.getDefault()).firstDayOfWeek
+                    val lastDayOfWeek = DayOfWeek.of(((firstDayOfWeek.getValue() + 5) % DayOfWeek.values().size) + 1)
+
                     viewModel.updateStatistics(
-                        now.with(startOfWeek, 1).toEpochDay(),
-                        now.with(startOfWeek, 1).plusDays(7).toEpochDay()
+                        now.with(TemporalAdjusters.previousOrSame(firstDayOfWeek)).toEpochDay(),
+                        now.with(TemporalAdjusters.nextOrSame(lastDayOfWeek)).toEpochDay()
                     )
                 }
                 R.id.month_stats -> {

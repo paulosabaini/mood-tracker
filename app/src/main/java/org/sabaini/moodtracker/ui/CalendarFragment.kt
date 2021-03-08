@@ -183,7 +183,7 @@ class CalendarFragment : Fragment() {
         calendar.setup(
             YearMonth.of(year!!.value, 1),
             YearMonth.of(year.value, 12),
-            DayOfWeek.MONDAY
+            DayOfWeek.SUNDAY
         )
 
         if (year.value == YearMonth.now().year) {
@@ -214,12 +214,5 @@ class CalendarFragment : Fragment() {
 
         // Show the popup menu.
         popup.show()
-    }
-
-    /*
-    * Convert a Int unicode emoji to String
-    */
-    private fun getEmoji(unicode: Int): String {
-        return String(Character.toChars(unicode))
     }
 }
