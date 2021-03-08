@@ -2,6 +2,9 @@ package org.sabaini.moodtracker.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.AbsoluteSizeSpan
 import android.util.Log
 import android.util.TypedValue
 import android.view.*
@@ -104,7 +107,7 @@ class CalendarFragment : Fragment() {
                             val mood = moods.find { mood -> day.date.toEpochDay() == mood.date }
                             if (mood != null) {
                                 textView.text = mood.mood
-                                textView.setTextSize(TypedValue.COMPLEX_UNIT_SP,32f)
+                                textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 32f)
                             }
                         })
 
@@ -198,18 +201,21 @@ class CalendarFragment : Fragment() {
         val popup = PopupMenu(context, v)
 
         viewModel.emojiList.value!!.forEach {
-            popup.menu.add(EmojiCompat.get().process(it))
+            val emoji = SpannableString(EmojiCompat.get().process(it))
+            emoji.setSpan(
+                AbsoluteSizeSpan(32, true),
+                0,
+                emoji.length,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+            popup.menu.add(emoji)
         }
 
         popup.setOnMenuItemClickListener { menuItem: MenuItem ->
             (v as TextView).text = menuItem.title
-            v.setTextSize(TypedValue.COMPLEX_UNIT_SP,32f)
-            viewModel.saveMood(menuItem.title)
+            v.setTextSize(TypedValue.COMPLEX_UNIT_SP, 32f)
+            viewModel.saveMood(menuItem.title.toString())
             true
-        }
-
-        popup.setOnDismissListener {
-            // Respond to popup being dismissed.
         }
 
         // Show the popup menu.

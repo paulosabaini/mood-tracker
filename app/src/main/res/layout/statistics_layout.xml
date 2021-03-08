@@ -34,4 +34,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/mood_statistic"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/quantity_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="2dp"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/quantity_statistic"
+        app:layout_constraintLeft_toLeftOf="@id/quantity_statistic"
+        app:layout_constraintRight_toRightOf="@id/quantity_statistic"
+        app:layout_constraintTop_toTopOf="@id/quantity_statistic" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

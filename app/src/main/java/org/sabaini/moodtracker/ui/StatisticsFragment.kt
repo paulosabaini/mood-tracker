@@ -1,7 +1,7 @@
 package org.sabaini.moodtracker.ui
 
+import android.graphics.Typeface
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,10 +17,10 @@ import org.sabaini.moodtracker.databinding.FragmentStatisticsBinding
 import org.sabaini.moodtracker.viewmodel.StatisticsViewModel
 import java.time.DayOfWeek
 import java.time.LocalDate
-import java.time.temporal.TemporalAdjuster
 import java.time.temporal.TemporalAdjusters
 import java.time.temporal.WeekFields
 import java.util.*
+import kotlin.math.roundToInt
 
 class StatisticsFragment : Fragment() {
 
@@ -47,8 +47,10 @@ class StatisticsFragment : Fragment() {
                 val view = layoutInflater.inflate(R.layout.statistics_layout, null)
                 val moodStatistic: TextView = view.findViewById(R.id.mood_statistic)
                 val quantityStatistic: ProgressBar = view.findViewById(R.id.quantity_statistic)
+                val quantityText: TextView = view.findViewById(R.id.quantity_text)
                 moodStatistic.text = statistic.mood
                 quantityStatistic.progress = statistic.percent!!.toInt()
+                quantityText.text = "${statistic.quantity} (${statistic.percent.roundToInt()}%)"
                 binding.moodsStats.addView(view)
             }
         })
@@ -58,7 +60,8 @@ class StatisticsFragment : Fragment() {
             when (view.id) {
                 R.id.week_stats -> {
                     val firstDayOfWeek = WeekFields.of(Locale.getDefault()).firstDayOfWeek
-                    val lastDayOfWeek = DayOfWeek.of(((firstDayOfWeek.getValue() + 5) % DayOfWeek.values().size) + 1)
+                    val lastDayOfWeek =
+                        DayOfWeek.of(((firstDayOfWeek.getValue() + 5) % DayOfWeek.values().size) + 1)
 
                     viewModel.updateStatistics(
                         now.with(TemporalAdjusters.previousOrSame(firstDayOfWeek)).toEpochDay(),
@@ -101,6 +104,7 @@ class StatisticsFragment : Fragment() {
                     R.color.gray
                 )
             )
+            it.setTypeface(Typeface.DEFAULT)
         }
         (view as Button).setTextColor(
             ContextCompat.getColor(
@@ -108,5 +112,6 @@ class StatisticsFragment : Fragment() {
                 R.color.ink
             )
         )
+        view.setTypeface(view.typeface, Typeface.BOLD)
     }
 }
