@@ -12,7 +12,7 @@ You can
 
 <img src="./screenshots/screenshot_03.png" width="30%" height="30%"> <img src="./screenshots/screenshot_04.png" width="30%" height="30%">  
 
-![Mood Tracker Demo](./screenshots/mood_tracker.gif)
+<img src="./screenshots/mood_tracker.gif" width="30%" height="30%">
 
 ## Library
 
