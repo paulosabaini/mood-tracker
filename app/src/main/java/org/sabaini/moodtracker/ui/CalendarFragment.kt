@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.AbsoluteSizeSpan
-import android.util.Log
 import android.util.TypedValue
 import android.view.*
 import android.view.LayoutInflater
@@ -13,7 +12,7 @@ import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.emoji.text.EmojiCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import com.kizitonwose.calendarview.CalendarView
 import com.kizitonwose.calendarview.model.CalendarDay
 import com.kizitonwose.calendarview.model.CalendarMonth
@@ -21,6 +20,7 @@ import com.kizitonwose.calendarview.model.DayOwner
 import com.kizitonwose.calendarview.ui.DayBinder
 import com.kizitonwose.calendarview.ui.MonthHeaderFooterBinder
 import com.kizitonwose.calendarview.ui.ViewContainer
+import dagger.hilt.android.AndroidEntryPoint
 import org.sabaini.moodtracker.R
 import org.sabaini.moodtracker.databinding.FragmentCalendarBinding
 import org.sabaini.moodtracker.viewmodel.CalendarViewModel
@@ -28,15 +28,10 @@ import java.time.DayOfWeek
 import java.time.YearMonth
 import java.util.*
 
-
+@AndroidEntryPoint
 class CalendarFragment : Fragment() {
 
-    private val viewModel: CalendarViewModel by lazy {
-        val activity = requireNotNull(this.activity)
-        ViewModelProvider(this, CalendarViewModel.Factory(activity.application)).get(
-            CalendarViewModel::class.java
-        )
-    }
+    private val viewModel: CalendarViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -102,7 +97,7 @@ class CalendarFragment : Fragment() {
 
                     viewModel.moods.observe(
                         viewLifecycleOwner,
-                        androidx.lifecycle.Observer { moods ->
+                        {
                             val moods = viewModel.filterMoods()
                             val mood = moods.find { mood -> day.date.toEpochDay() == mood.date }
                             if (mood != null) {

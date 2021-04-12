@@ -1,19 +1,17 @@
 package org.sabaini.moodtracker.viewmodel
 
-import android.app.Application
 import android.view.View
 import androidx.lifecycle.*
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import org.sabaini.moodtracker.db.Statistics
-import org.sabaini.moodtracker.db.getDatabase
 import org.sabaini.moodtracker.repository.MoodTrackerRepository
 import java.time.LocalDate
+import javax.inject.Inject
 
-class StatisticsViewModel(application: Application) : ViewModel() {
-
-    /* Database and Repository variables */
-    private val database = getDatabase(application)
-    private val moodTrackerRepository = MoodTrackerRepository(database)
+@HiltViewModel
+class StatisticsViewModel @Inject constructor(private val moodTrackerRepository: MoodTrackerRepository) :
+    ViewModel() {
 
     private val _monthStatistics = MutableLiveData<List<Statistics>>()
     val monthStatistics: LiveData<List<Statistics>>
@@ -39,16 +37,6 @@ class StatisticsViewModel(application: Application) : ViewModel() {
     fun updateStatistics(begin: Long?, end: Long?) {
         viewModelScope.launch {
             _monthStatistics.value = moodTrackerRepository.getStatistics(begin, end)
-        }
-    }
-
-    class Factory(val app: Application) : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(StatisticsViewModel::class.java)) {
-                @Suppress("UNCHECKED_CAST")
-                return StatisticsViewModel(app) as T
-            }
-            throw IllegalArgumentException("Unable to construct viewmodel")
         }
     }
 }

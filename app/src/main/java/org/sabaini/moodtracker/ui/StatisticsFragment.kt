@@ -10,9 +10,11 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
+import dagger.hilt.android.AndroidEntryPoint
 import org.sabaini.moodtracker.R
+import org.sabaini.moodtracker.R.color.gray
+import org.sabaini.moodtracker.R.color.ink
 import org.sabaini.moodtracker.databinding.FragmentStatisticsBinding
 import org.sabaini.moodtracker.viewmodel.StatisticsViewModel
 import java.time.DayOfWeek
@@ -22,14 +24,10 @@ import java.time.temporal.WeekFields
 import java.util.*
 import kotlin.math.roundToInt
 
+@AndroidEntryPoint
 class StatisticsFragment : Fragment() {
 
-    private val viewModel: StatisticsViewModel by lazy {
-        val activity = requireNotNull(this.activity)
-        ViewModelProvider(this, StatisticsViewModel.Factory(activity.application)).get(
-            StatisticsViewModel::class.java
-        )
-    }
+    private val viewModel: StatisticsViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,7 +39,7 @@ class StatisticsFragment : Fragment() {
 
         binding.viewModel = viewModel
 
-        viewModel.monthStatistics.observe(viewLifecycleOwner, Observer { statistics ->
+        viewModel.monthStatistics.observe(viewLifecycleOwner, { statistics ->
             binding.moodsStats.removeAllViews()
             statistics.forEach { statistic ->
                 val view = layoutInflater.inflate(R.layout.statistics_layout, null)
@@ -55,13 +53,13 @@ class StatisticsFragment : Fragment() {
             }
         })
 
-        viewModel.filter.observe(viewLifecycleOwner, Observer { view ->
+        viewModel.filter.observe(viewLifecycleOwner, { view ->
             val now = LocalDate.now()
             when (view.id) {
                 R.id.week_stats -> {
                     val firstDayOfWeek = WeekFields.of(Locale.getDefault()).firstDayOfWeek
                     val lastDayOfWeek =
-                        DayOfWeek.of(((firstDayOfWeek.getValue() + 5) % DayOfWeek.values().size) + 1)
+                        DayOfWeek.of(((firstDayOfWeek.value + 5) % DayOfWeek.values().size) + 1)
 
                     viewModel.updateStatistics(
                         now.with(TemporalAdjusters.previousOrSame(firstDayOfWeek)).toEpochDay(),
@@ -101,17 +99,17 @@ class StatisticsFragment : Fragment() {
             it.setTextColor(
                 ContextCompat.getColor(
                     requireContext(),
-                    R.color.gray
+                    gray
                 )
             )
-            it.setTypeface(Typeface.DEFAULT)
+            it.typeface = Typeface.DEFAULT
         }
         (view as Button).setTextColor(
             ContextCompat.getColor(
                 requireContext(),
-                R.color.ink
+                ink
             )
         )
-        view.setTypeface(view.typeface, Typeface.BOLD)
+        view.typeface = Typeface.create(view.typeface, Typeface.BOLD)
     }
 }

@@ -1,16 +1,22 @@
-package org.sabaini.moodtracker
+package org.sabaini.moodtracker.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.emoji.bundled.BundledEmojiCompatConfig
 import androidx.emoji.text.EmojiCompat
-import androidx.navigation.Navigation
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import dagger.hilt.android.AndroidEntryPoint
+import org.sabaini.moodtracker.R
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+
+    @Inject
+    lateinit var emojiConfig: BundledEmojiCompatConfig
+
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.Theme_MoodTracker)
         super.onCreate(savedInstanceState)
@@ -19,7 +25,7 @@ class MainActivity : AppCompatActivity() {
         setupViews()
     }
 
-    fun setupViews() {
+    private fun setupViews() {
         // Finding the Navigation Controller
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
@@ -31,7 +37,6 @@ class MainActivity : AppCompatActivity() {
         )
 
         // Configure EmojiCompat
-        val config = BundledEmojiCompatConfig(this)
-        EmojiCompat.init(config)
+        EmojiCompat.init(emojiConfig)
     }
 }

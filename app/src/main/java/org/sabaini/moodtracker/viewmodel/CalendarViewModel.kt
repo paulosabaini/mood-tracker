@@ -1,19 +1,17 @@
 package org.sabaini.moodtracker.viewmodel
 
-import android.app.Application
 import androidx.lifecycle.*
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import org.sabaini.moodtracker.db.Mood
-import org.sabaini.moodtracker.db.getDatabase
 import org.sabaini.moodtracker.repository.MoodTrackerRepository
 import java.time.LocalDate
 import java.time.Year
+import javax.inject.Inject
 
-class CalendarViewModel(application: Application) : ViewModel() {
-
-    /* Database and Repository variables */
-    private val database = getDatabase(application)
-    private val moodTrackerRepository = MoodTrackerRepository(database)
+@HiltViewModel
+class CalendarViewModel @Inject constructor(private val moodTrackerRepository: MoodTrackerRepository) :
+    ViewModel() {
 
     private val _today = MutableLiveData<LocalDate>()
     val today: LiveData<LocalDate>
@@ -82,15 +80,5 @@ class CalendarViewModel(application: Application) : ViewModel() {
 
     fun filterMoods(): List<Mood> {
         return _moods.value!!.filter { it.date >= _displayYear.value!!.atDay(1).toEpochDay() }
-    }
-
-    class Factory(val app: Application) : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(CalendarViewModel::class.java)) {
-                @Suppress("UNCHECKED_CAST")
-                return CalendarViewModel(app) as T
-            }
-            throw IllegalArgumentException("Unable to construct viewmodel")
-        }
     }
 }

@@ -11,7 +11,7 @@ interface MoodTrackerDao {
     @Query("select * from mood where date = :date")
     fun getByDate(date: Long): LiveData<Mood>
 
-    @Update()
+    @Update
     fun update(mood: Mood)
 
     @Query("select * from mood order by id")
