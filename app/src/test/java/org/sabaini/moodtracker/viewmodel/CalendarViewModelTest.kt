@@ -2,11 +2,13 @@ package org.sabaini.moodtracker.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
+import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.sabaini.moodtracker.MainCoroutineRule
 import org.sabaini.moodtracker.repository.FakeMoodTrackerRepository
+import java.time.LocalDate
 
 class CalendarViewModelTest {
 
@@ -17,10 +19,12 @@ class CalendarViewModelTest {
     var mainCoroutineRule = MainCoroutineRule()
 
     private lateinit var viewModel: CalendarViewModel
+    private lateinit var repository: FakeMoodTrackerRepository
 
     @Before
     fun setup() {
-        viewModel = CalendarViewModel(FakeMoodTrackerRepository())
+        repository = FakeMoodTrackerRepository()
+        viewModel = CalendarViewModel(repository)
     }
 
     @Test
@@ -42,6 +46,14 @@ class CalendarViewModelTest {
         val mood = "emoji"
         viewModel.saveMood(mood)
         assertThat(viewModel.moods.value!![0].mood).isEqualTo(mood)
+    }
+
+    @Test
+    fun testPopulatedSaveMood() = runBlocking {
+        repository.insertMood(LocalDate.now().minusDays(1), "emoji1")
+        val mood = "emoji2"
+        viewModel.saveMood(mood)
+        assertThat(viewModel.moods.value!![1].mood).isEqualTo(mood)
     }
 
     @Test
