@@ -8,9 +8,6 @@ interface MoodTrackerDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(mood: Mood)
 
-    @Query("select * from mood where date = :date")
-    fun getByDate(date: Long): LiveData<Mood>
-
     @Update
     fun update(mood: Mood)
 

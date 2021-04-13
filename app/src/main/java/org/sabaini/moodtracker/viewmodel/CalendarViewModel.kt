@@ -5,12 +5,13 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import org.sabaini.moodtracker.db.Mood
 import org.sabaini.moodtracker.repository.MoodTrackerRepository
+import org.sabaini.moodtracker.repository.MoodTrackerRepositoryImpl
 import java.time.LocalDate
 import java.time.Year
 import javax.inject.Inject
 
 @HiltViewModel
-class CalendarViewModel @Inject constructor(private val moodTrackerRepository: MoodTrackerRepository) :
+class CalendarViewModel @Inject constructor(private val moodTrackerRepositoryImpl: MoodTrackerRepository) :
     ViewModel() {
 
     private val _today = MutableLiveData<LocalDate>()
@@ -31,7 +32,7 @@ class CalendarViewModel @Inject constructor(private val moodTrackerRepository: M
 
     init {
         viewModelScope.launch {
-            _moods.value = moodTrackerRepository.getMoods()
+            _moods.value = moodTrackerRepositoryImpl.getMoods()
         }
         _today.value = LocalDate.now()
         _displayYear.value = Year.now()
@@ -64,17 +65,20 @@ class CalendarViewModel @Inject constructor(private val moodTrackerRepository: M
 
     fun saveMood(mood: CharSequence) {
         viewModelScope.launch {
+            if (mood.isEmpty()) {
+                return@launch
+            }
             if (moods.value!!.isEmpty()) {
-                moodTrackerRepository.insertMood(_today.value!!, mood)
+                moodTrackerRepositoryImpl.insertMood(_today.value!!, mood)
             } else {
                 val lastMood = moods.value!!.lastOrNull()
                 if (lastMood!!.date != _today.value!!.toEpochDay()) {
-                    moodTrackerRepository.insertMood(_today.value!!, mood)
+                    moodTrackerRepositoryImpl.insertMood(_today.value!!, mood)
                 } else {
-                    moodTrackerRepository.updateMood(lastMood.copy(mood = mood as String))
+                    moodTrackerRepositoryImpl.updateMood(lastMood.copy(mood = mood as String))
                 }
             }
-            _moods.value = moodTrackerRepository.getMoods()
+            _moods.value = moodTrackerRepositoryImpl.getMoods()
         }
     }
 

@@ -10,12 +10,12 @@ import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
-class StatisticsViewModel @Inject constructor(private val moodTrackerRepository: MoodTrackerRepository) :
+class StatisticsViewModel @Inject constructor(private val moodTrackerRepositoryImpl: MoodTrackerRepository) :
     ViewModel() {
 
-    private val _monthStatistics = MutableLiveData<List<Statistics>>()
-    val monthStatistics: LiveData<List<Statistics>>
-        get() = _monthStatistics
+    private val _statistics = MutableLiveData<List<Statistics>>()
+    val statistics: LiveData<List<Statistics>>
+        get() = _statistics
 
     private val _filter = MutableLiveData<View>()
     val filter: LiveData<View>
@@ -23,7 +23,7 @@ class StatisticsViewModel @Inject constructor(private val moodTrackerRepository:
 
     init {
         viewModelScope.launch {
-            _monthStatistics.value = moodTrackerRepository.getStatistics(
+            _statistics.value = moodTrackerRepositoryImpl.getStatistics(
                 LocalDate.now().withDayOfMonth(1).toEpochDay(),
                 LocalDate.now().toEpochDay()
             )
@@ -36,7 +36,7 @@ class StatisticsViewModel @Inject constructor(private val moodTrackerRepository:
 
     fun updateStatistics(begin: Long?, end: Long?) {
         viewModelScope.launch {
-            _monthStatistics.value = moodTrackerRepository.getStatistics(begin, end)
+            _statistics.value = moodTrackerRepositoryImpl.getStatistics(begin, end)
         }
     }
 }

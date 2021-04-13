@@ -11,6 +11,7 @@ import dagger.hilt.components.SingletonComponent
 import org.sabaini.moodtracker.db.MoodTrackerDao
 import org.sabaini.moodtracker.db.MoodTrackerDb
 import org.sabaini.moodtracker.repository.MoodTrackerRepository
+import org.sabaini.moodtracker.repository.MoodTrackerRepositoryImpl
 import javax.inject.Singleton
 
 @Module
@@ -37,7 +38,7 @@ object AppModule {
     @Provides
     @Singleton
     fun provideMoodTrackerRepository(moodTrackerDao: MoodTrackerDao): MoodTrackerRepository {
-        return MoodTrackerRepository(moodTrackerDao)
+        return MoodTrackerRepositoryImpl(moodTrackerDao)
     }
 
     @Provides

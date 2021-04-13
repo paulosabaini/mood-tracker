@@ -39,7 +39,7 @@ class StatisticsFragment : Fragment() {
 
         binding.viewModel = viewModel
 
-        viewModel.monthStatistics.observe(viewLifecycleOwner, { statistics ->
+        viewModel.statistics.observe(viewLifecycleOwner, { statistics ->
             binding.moodsStats.removeAllViews()
             statistics.forEach { statistic ->
                 val view = layoutInflater.inflate(R.layout.statistics_layout, null)
