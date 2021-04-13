@@ -26,10 +26,17 @@ class FakeMoodTrackerRepository() : MoodTrackerRepository {
     }
 
     override suspend fun getStatistics(begin: Long?, end: Long?): List<Statistics>? {
-        if (moods.size == 1) {
-            val stat = Statistics(moods[0].mood, moods.size, moods.size * 100f)
-            statistics.add(stat)
-        }
+            moods.forEach{ mood ->
+                val stat = statistics.find { statistic -> mood.mood == statistic.mood }
+                if (stat == null) {
+                    val stat_ = Statistics(mood.mood, 1, 100f)
+                    statistics.add(stat_)
+                } else {
+                    val upStat = stat.copy(quantity = stat.quantity!!.plus(1), percent = stat.percent!!/2)
+                    statistics.remove(stat)
+                    statistics.add(upStat)
+                }
+            }
         return statistics
     }
 }

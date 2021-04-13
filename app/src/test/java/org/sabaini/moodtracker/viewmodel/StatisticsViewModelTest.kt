@@ -35,4 +35,14 @@ class StatisticsViewModelTest {
         viewModel.updateStatistics(now.toEpochDay(), now.toEpochDay())
         assertThat(viewModel.statistics.value).isNotEmpty()
     }
+
+    @Test
+    fun testUpdateStatisticsTwoDays() = runBlocking {
+        val now = LocalDate.now()
+        val yesterday = now.minusDays(1)
+        repository.insertMood(yesterday, "emoji")
+        repository.insertMood(now, "emoji2")
+        viewModel.updateStatistics(yesterday.toEpochDay(), now.toEpochDay())
+        assertThat(viewModel.statistics.value!!.size).isEqualTo(2)
+    }
 }
