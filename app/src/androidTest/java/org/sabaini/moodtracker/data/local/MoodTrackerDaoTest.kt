@@ -1,4 +1,4 @@
-package org.sabaini.moodtracker.db
+package org.sabaini.moodtracker.data.local
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
@@ -38,8 +38,8 @@ class MoodTrackerDaoTest {
     @Test
     fun testGetAllMoods() = runBlocking {
         val now = LocalDate.now().toEpochDay()
-        val mood1 = Mood(1, now, "emoji")
-        val mood2 = Mood(2, now, "emoji")
+        val mood1 = DatabaseMood(1, now, "emoji")
+        val mood2 = DatabaseMood(2, now, "emoji")
         moodTrackerDao.insert(mood1)
         moodTrackerDao.insert(mood2)
         assertThat(moodTrackerDao.getAllMoods().size).isEqualTo(2)
@@ -48,7 +48,7 @@ class MoodTrackerDaoTest {
     @Test
     fun testInsertMood() = runBlocking {
         val now = LocalDate.now().toEpochDay()
-        val mood = Mood(1, now, "emoji")
+        val mood = DatabaseMood(1, now, "emoji")
         moodTrackerDao.insert(mood)
         assertThat(moodTrackerDao.getAllMoods()[0]).isEqualTo(mood)
     }
@@ -56,7 +56,7 @@ class MoodTrackerDaoTest {
     @Test
     fun testUpdateMood() = runBlocking {
         val now = LocalDate.now().toEpochDay()
-        val mood = Mood(1, now, "emoji")
+        val mood = DatabaseMood(1, now, "emoji")
         moodTrackerDao.insert(mood)
         moodTrackerDao.update(mood.copy(mood = "mood2"))
         assertThat(moodTrackerDao.getAllMoods()[0]).isNotEqualTo(mood)
@@ -66,8 +66,8 @@ class MoodTrackerDaoTest {
     fun testPeriodStatistics() = runBlocking {
         val today = LocalDate.now().toEpochDay()
         val yesterday = LocalDate.now().minusDays(1).toEpochDay()
-        val mood1 = Mood(1, yesterday, "emoji")
-        val mood2 = Mood(2, today, "emoji")
+        val mood1 = DatabaseMood(1, yesterday, "emoji")
+        val mood2 = DatabaseMood(2, today, "emoji")
         moodTrackerDao.insert(mood1)
         moodTrackerDao.insert(mood2)
         val stats = moodTrackerDao.periodStatistics(today, today)
@@ -80,8 +80,8 @@ class MoodTrackerDaoTest {
     fun testAllTimeStatistics() = runBlocking {
         val today = LocalDate.now().toEpochDay()
         val yesterday = LocalDate.now().minusDays(1).toEpochDay()
-        val mood1 = Mood(1, yesterday, "emoji")
-        val mood2 = Mood(2, today, "emoji")
+        val mood1 = DatabaseMood(1, yesterday, "emoji")
+        val mood2 = DatabaseMood(2, today, "emoji")
         moodTrackerDao.insert(mood1)
         moodTrackerDao.insert(mood2)
         val stats = moodTrackerDao.allTimeStatistics()

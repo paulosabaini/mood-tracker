@@ -1,11 +1,11 @@
-package org.sabaini.moodtracker.viewmodel
+package org.sabaini.moodtracker.ui.viewmodels
 
 import androidx.lifecycle.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import org.sabaini.moodtracker.db.Mood
-import org.sabaini.moodtracker.repository.MoodTrackerRepository
-import org.sabaini.moodtracker.repository.MoodTrackerRepositoryImpl
+import org.sabaini.moodtracker.entities.Mood
+import org.sabaini.moodtracker.repositories.MoodTrackerRepository
+import org.sabaini.moodtracker.utilities.Values.EMOJIS
 import java.time.LocalDate
 import java.time.Year
 import javax.inject.Inject
@@ -36,23 +36,7 @@ class CalendarViewModel @Inject constructor(private val moodTrackerRepositoryImp
         }
         _today.value = LocalDate.now()
         _displayYear.value = Year.now()
-        _emojisList.value = listOf(
-            "\ud83d\ude22",
-            "\ud83d\ude41",
-            "\ud83d\ude10",
-            "\ud83d\ude42",
-            "\ud83d\ude01",
-            "\ud83d\ude34",
-            "\ud83d\ude0d",
-            "\ud83e\udd2a",
-            "\ud83e\udd73",
-            "\ud83d\ude0e",
-            "\ud83d\ude31",
-            "\ud83e\udd12",
-            "\ud83e\udd2f",
-            "\ud83d\ude20",
-            "\ud83e\udd2c"
-        )
+        _emojisList.value = EMOJIS
     }
 
     fun decrementDisplayYear() {
@@ -75,7 +59,13 @@ class CalendarViewModel @Inject constructor(private val moodTrackerRepositoryImp
                 if (lastMood!!.date != _today.value!!.toEpochDay()) {
                     moodTrackerRepositoryImpl.insertMood(_today.value!!, mood)
                 } else {
-                    moodTrackerRepositoryImpl.updateMood(lastMood.copy(mood = mood as String))
+                    moodTrackerRepositoryImpl.updateMood(
+                        Mood(
+                            id = lastMood.id,
+                            date = lastMood.date,
+                            mood = mood as String
+                        )
+                    )
                 }
             }
             _moods.value = moodTrackerRepositoryImpl.getMoods()

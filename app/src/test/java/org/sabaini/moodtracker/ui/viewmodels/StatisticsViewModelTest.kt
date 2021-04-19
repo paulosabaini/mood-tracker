@@ -1,4 +1,4 @@
-package org.sabaini.moodtracker.viewmodel
+package org.sabaini.moodtracker.ui.viewmodels
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
@@ -7,7 +7,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.sabaini.moodtracker.MainCoroutineRule
-import org.sabaini.moodtracker.repository.FakeMoodTrackerRepository
+import org.sabaini.moodtracker.repositories.FakeMoodTrackerRepository
 import java.time.LocalDate
 
 
@@ -33,7 +33,7 @@ class StatisticsViewModelTest {
         val now = LocalDate.now()
         repository.insertMood(now, "emoji")
         viewModel.updateStatistics(now.toEpochDay(), now.toEpochDay())
-        assertThat(viewModel.statistics.value).isNotEmpty()
+        assertThat(viewModel.databaseStatistics.value).isNotEmpty()
     }
 
     @Test
@@ -43,6 +43,6 @@ class StatisticsViewModelTest {
         repository.insertMood(yesterday, "emoji")
         repository.insertMood(now, "emoji2")
         viewModel.updateStatistics(yesterday.toEpochDay(), now.toEpochDay())
-        assertThat(viewModel.statistics.value!!.size).isEqualTo(2)
+        assertThat(viewModel.databaseStatistics.value!!.size).isEqualTo(2)
     }
 }

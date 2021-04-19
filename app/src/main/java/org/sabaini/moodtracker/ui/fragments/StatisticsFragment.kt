@@ -1,5 +1,6 @@
-package org.sabaini.moodtracker.ui
+package org.sabaini.moodtracker.ui.fragments
 
+import android.annotation.SuppressLint
 import android.graphics.Typeface
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,7 +17,7 @@ import org.sabaini.moodtracker.R
 import org.sabaini.moodtracker.R.color.gray
 import org.sabaini.moodtracker.R.color.ink
 import org.sabaini.moodtracker.databinding.FragmentStatisticsBinding
-import org.sabaini.moodtracker.viewmodel.StatisticsViewModel
+import org.sabaini.moodtracker.ui.viewmodels.StatisticsViewModel
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.temporal.TemporalAdjusters
@@ -29,6 +30,7 @@ class StatisticsFragment : Fragment() {
 
     private val viewModel: StatisticsViewModel by viewModels()
 
+    @SuppressLint("InflateParams", "SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -39,7 +41,7 @@ class StatisticsFragment : Fragment() {
 
         binding.viewModel = viewModel
 
-        viewModel.statistics.observe(viewLifecycleOwner, { statistics ->
+        viewModel.databaseStatistics.observe(viewLifecycleOwner, { statistics ->
             binding.moodsStats.removeAllViews()
             statistics.forEach { statistic ->
                 val view = layoutInflater.inflate(R.layout.statistics_layout, null)

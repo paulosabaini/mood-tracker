@@ -1,4 +1,4 @@
-package org.sabaini.moodtracker.ui
+package org.sabaini.moodtracker.ui.fragments
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -23,7 +23,7 @@ import com.kizitonwose.calendarview.ui.ViewContainer
 import dagger.hilt.android.AndroidEntryPoint
 import org.sabaini.moodtracker.R
 import org.sabaini.moodtracker.databinding.FragmentCalendarBinding
-import org.sabaini.moodtracker.viewmodel.CalendarViewModel
+import org.sabaini.moodtracker.ui.viewmodels.CalendarViewModel
 import java.time.DayOfWeek
 import java.time.YearMonth
 import java.util.*

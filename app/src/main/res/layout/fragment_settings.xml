@@ -8,13 +8,13 @@
 
         <variable
             name="viewModel"
-            type="org.sabaini.moodtracker.viewmodel.SettingsViewModel" />
+            type="org.sabaini.moodtracker.ui.viewmodels.SettingsViewModel" />
     </data>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.SettingsFragment">
+        tools:context=".ui.fragments.SettingsFragment">
 
         <!-- TODO: Update blank fragment layout -->
         <TextView

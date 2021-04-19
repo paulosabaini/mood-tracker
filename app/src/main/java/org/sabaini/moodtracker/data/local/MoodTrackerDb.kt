@@ -1,9 +1,10 @@
-package org.sabaini.moodtracker.db
+package org.sabaini.moodtracker.data.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
 
-@Database(entities = [Mood::class], version = 1, exportSchema = false)
+@Database(entities = [DatabaseMood::class], version = 1, exportSchema = false)
 abstract class MoodTrackerDb : RoomDatabase() {
+
     abstract fun moodTrackerDao(): MoodTrackerDao
 }

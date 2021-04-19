@@ -1,4 +1,4 @@
-package org.sabaini.moodtracker.viewmodel
+package org.sabaini.moodtracker.ui.viewmodels
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
@@ -7,7 +7,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.sabaini.moodtracker.MainCoroutineRule
-import org.sabaini.moodtracker.repository.FakeMoodTrackerRepository
+import org.sabaini.moodtracker.repositories.FakeMoodTrackerRepository
 import java.time.LocalDate
 
 class CalendarViewModelTest {

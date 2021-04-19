@@ -1,7 +1,7 @@
-package org.sabaini.moodtracker.repository
+package org.sabaini.moodtracker.repositories
 
-import org.sabaini.moodtracker.db.Mood
-import org.sabaini.moodtracker.db.Statistics
+import org.sabaini.moodtracker.entities.Mood
+import org.sabaini.moodtracker.entities.Statistics
 import java.time.LocalDate
 
 interface MoodTrackerRepository {

@@ -6,17 +6,17 @@
     app:startDestination="@id/calendarFragment">
     <fragment
         android:id="@+id/calendarFragment"
-        android:name="org.sabaini.moodtracker.ui.CalendarFragment"
+        android:name="org.sabaini.moodtracker.ui.fragments.CalendarFragment"
         android:label="fragment_calendar"
         tools:layout="@layout/fragment_calendar" />
     <fragment
         android:id="@+id/statisticsFragment"
-        android:name="org.sabaini.moodtracker.ui.StatisticsFragment"
+        android:name="org.sabaini.moodtracker.ui.fragments.StatisticsFragment"
         android:label="fragment_statistics"
         tools:layout="@layout/fragment_statistics" />
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="org.sabaini.moodtracker.ui.SettingsFragment"
+        android:name="org.sabaini.moodtracker.ui.fragments.SettingsFragment"
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" />
 </navigation>

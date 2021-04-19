@@ -1,11 +1,11 @@
-package org.sabaini.moodtracker.viewmodel
+package org.sabaini.moodtracker.ui.viewmodels
 
 import android.view.View
 import androidx.lifecycle.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import org.sabaini.moodtracker.db.Statistics
-import org.sabaini.moodtracker.repository.MoodTrackerRepository
+import org.sabaini.moodtracker.entities.Statistics
+import org.sabaini.moodtracker.repositories.MoodTrackerRepository
 import java.time.LocalDate
 import javax.inject.Inject
 
@@ -14,7 +14,7 @@ class StatisticsViewModel @Inject constructor(private val moodTrackerRepositoryI
     ViewModel() {
 
     private val _statistics = MutableLiveData<List<Statistics>>()
-    val statistics: LiveData<List<Statistics>>
+    val databaseStatistics: LiveData<List<Statistics>>
         get() = _statistics
 
     private val _filter = MutableLiveData<View>()
