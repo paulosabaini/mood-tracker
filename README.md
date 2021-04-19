@@ -22,6 +22,7 @@ You can
 * [Kotlin coroutines](https://developer.android.com/kotlin/coroutines)
 * [Navigation](https://developer.android.com/guide/navigation)
 * [Bottom navigation](https://material.io/components/bottom-navigation/android)
+* [Hilt](https://developer.android.com/training/dependency-injection/hilt-android)
 
 ## App Architecture
 * MVVM
