@@ -9,7 +9,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import org.sabaini.moodtracker.data.local.MoodTrackerDao
-import org.sabaini.moodtracker.data.local.MoodTrackerDb
+import org.sabaini.moodtracker.data.local.MoodTrackerDatabase
 import org.sabaini.moodtracker.repositories.MoodTrackerRepository
 import org.sabaini.moodtracker.repositories.MoodTrackerRepositoryImpl
 import javax.inject.Singleton
@@ -20,10 +20,10 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideMoodTrackerDatabase(@ApplicationContext context: Context): MoodTrackerDb {
+    fun provideMoodTrackerDatabase(@ApplicationContext context: Context): MoodTrackerDatabase {
         return Room.databaseBuilder(
             context.applicationContext,
-            MoodTrackerDb::class.java,
+            MoodTrackerDatabase::class.java,
             "moods"
         )
             .fallbackToDestructiveMigration()
@@ -31,7 +31,7 @@ object AppModule {
     }
 
     @Provides
-    fun provideMoodTrackerDao(database: MoodTrackerDb): MoodTrackerDao {
+    fun provideMoodTrackerDao(database: MoodTrackerDatabase): MoodTrackerDao {
         return database.moodTrackerDao()
     }
 

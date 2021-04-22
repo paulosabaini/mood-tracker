@@ -15,7 +15,7 @@ import java.time.LocalDate
 
 @RunWith(AndroidJUnit4::class)
 class MoodTrackerDaoTest {
-    private lateinit var database: MoodTrackerDb
+    private lateinit var database: MoodTrackerDatabase
     private lateinit var moodTrackerDao: MoodTrackerDao
 
     @get:Rule
@@ -25,7 +25,7 @@ class MoodTrackerDaoTest {
     fun createDb() = runBlocking {
         database = Room.inMemoryDatabaseBuilder(
             ApplicationProvider.getApplicationContext(),
-            MoodTrackerDb::class.java,
+            MoodTrackerDatabase::class.java,
         ).build()
         moodTrackerDao = database.moodTrackerDao()
     }
