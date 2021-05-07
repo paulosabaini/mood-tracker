@@ -165,7 +165,7 @@ class CalendarFragment : Fragment() {
                 override fun bind(container: MonthViewContainer, month: CalendarMonth) {
                     @SuppressLint("SetTextI18n") // Concatenation warning for `setText` call.
                     container.textView.text =
-                        month.yearMonth.month.name.toUpperCase(Locale.getDefault())
+                        month.yearMonth.month.name.uppercase(Locale.getDefault())
                 }
             }
 
