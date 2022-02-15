@@ -12,7 +12,8 @@
         android:theme="@style/Theme.MoodTracker">
         <activity
             android:name=".ui.MainActivity"
-            android:theme="@style/SplashScreenTheme">
+            android:theme="@style/SplashScreenTheme"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
