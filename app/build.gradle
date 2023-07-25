@@ -6,13 +6,13 @@ plugins {
 }
 
 android {
-    compileSdkVersion 32
-    buildToolsVersion "30.0.3"
+    compileSdk 33
+    namespace = "org.sabaini.moodtracker"
 
     defaultConfig {
         applicationId "org.sabaini.moodtracker"
         minSdkVersion 24
-        targetSdkVersion 32
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 
@@ -27,11 +27,11 @@ android {
     }
     compileOptions {
         coreLibraryDesugaringEnabled true
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = JavaVersion.VERSION_17.toString()
     }
     buildFeatures {
         dataBinding true
@@ -58,7 +58,7 @@ dependencies {
     testImplementation "com.google.truth:truth:$truth_version"
     testImplementation "org.mockito:mockito-inline:$mockito_version"
 
-    // Instrumented Unit Tests
+    // Instrumented Tests
     androidTestImplementation "junit:junit:$junit_version"
     androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinxcoroutinestest_version"
     androidTestImplementation "androidx.arch.core:core-testing:$coretesting_version"
