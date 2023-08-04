@@ -1,0 +1,99 @@
+[versions]
+# plugins
+android-gradle                      = "8.1.0"
+ksp                                 = "1.9.0-1.0.12"
+
+# production libraries
+core                                = "1.10.1"
+appcompat                           = "1.6.1"
+material                            = "1.9.0"
+constraint-layout                   = "2.1.4"
+legacy                              = "1.0.0"
+viewmodel                           = "2.6.1"
+desugar                             = "2.0.3"
+hilt                                = "2.47"
+kotlin                              = "1.9.0"
+kotlin-coroutines                   = "1.7.3"
+lifecycle                           = "2.6.1"
+room                                = "2.5.2"
+timber                              = "5.0.1"
+calendar-view                       = "1.0.2"
+navigation                          = "2.6.0"
+emoji                               = "1.1.0"
+
+# test libraries
+test-junit                          = "4.13.2"
+test-junit-ext                      = "1.1.5"
+test-mockk                          = "1.13.5"
+test-truth                          = "1.1.2"
+test-core                           = "1.5.0"
+test-arch-core                      = "2.2.0"
+test-kotlinx-coroutines             = "1.6.4"
+test-mockito                        = "4.5.1"
+
+# android test libraries
+test-android-runner                 = "1.5.2"
+test-espresso                            = "3.5.1"
+
+[plugins]
+android-application                 = { id = "com.android.application", version.ref = "android-gradle" }
+android-library                     = { id = "com.android.library", version.ref = "android-gradle" }
+hilt                                = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+kotlin                              = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-kapt                         = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
+ksp                                 = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+
+[libraries]
+# production libraries
+core                                = { module = "androidx.core:core-ktx", version.ref = "core" }
+appcompat                           = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
+material                            = { module = "com.google.android.material:material", version.ref = "material" }
+constraintlayout                   = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraint-layout" }
+legacy-support                      = { module = "androidx.legacy:legacy-support-v4", version.ref = "legacy" }
+navigation-fragment                 = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation" }
+navigation-ui                       = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation" }
+lifecycle-viewmodel                 = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
+desugar                             = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar" }
+calendarview                       = { module = "com.github.kizitonwose:CalendarView", version.ref = "calendar-view" }
+emoji                               = { module = "com.android.support:support-emoji-bundled", version.ref = "emoji" }
+hilt                                = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
+hilt-compiler                       = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
+kotlin-coroutines                   = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlin-coroutines" }
+room                                = { module = "androidx.room:room-runtime", version.ref = "room" }
+room-compiler                       = { module = "androidx.room:room-compiler", version.ref = "room" }
+room-ktx                            = { module = "androidx.room:room-ktx", version.ref = "room" }
+timber                              = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
+
+# test libraries
+test-core                           = { module = "androidx.test:core", version.ref = "test-core" }
+test-junit                          = { module = "junit:junit", version.ref = "test-junit" }
+test-arch-core                      = { module = "androidx.arch.core:core-testing", version.ref = "test-arch-core" }
+test-kotlin                         = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
+test-kotlin-coroutines              = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlin-coroutines" }
+test-truth                          = { module = "com.google.truth:truth", version.ref = "test-truth" }
+test-mockito                        = { module = "org.mockito:mockito-inline", version.ref = "test-mockito" }
+
+# android test libraries
+test-android-mockito                        = { module = "org.mockito:mockito-core", version.ref = "test-mockito" }
+test-android-junit-ext                      = { module = "androidx.test.ext:junit", version.ref = "test-junit-ext" }
+test-android-espresso                       = { module = "androidx.test.espresso:espresso-core", version.ref = "test-espresso" }
+
+[bundles]
+common-test = [
+    "test-junit",
+    "test-arch-core",
+    "test-kotlin",
+    "test-kotlin-coroutines",
+    "test-truth",
+    "test-mockito"
+]
+common-android-test = [
+    "test-junit",
+    "test-arch-core",
+    "test-kotlin",
+    "test-kotlin-coroutines",
+    "test-truth",
+    "test-android-mockito",
+    "test-android-junit-ext",
+    "test-android-espresso"
+]
