@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MoodTracker">
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".presentation.MainActivity"
             android:theme="@style/SplashScreenTheme"
             android:exported="true">
             <intent-filter>

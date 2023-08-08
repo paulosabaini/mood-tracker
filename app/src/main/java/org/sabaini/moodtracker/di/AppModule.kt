@@ -8,10 +8,10 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import org.sabaini.moodtracker.data.local.MoodTrackerDao
-import org.sabaini.moodtracker.data.local.MoodTrackerDatabase
-import org.sabaini.moodtracker.repositories.MoodTrackerRepository
-import org.sabaini.moodtracker.repositories.MoodTrackerRepositoryImpl
+import org.sabaini.moodtracker.data.local.dao.MoodTrackerDao
+import org.sabaini.moodtracker.data.local.db.MoodTrackerDatabase
+import org.sabaini.moodtracker.domain.repository.MoodTrackerRepository
+import org.sabaini.moodtracker.data.repository.MoodTrackerRepositoryImpl
 import javax.inject.Singleton
 
 @Module

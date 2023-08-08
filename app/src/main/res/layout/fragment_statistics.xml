@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="org.sabaini.moodtracker.ui.viewmodels.StatisticsViewModel" />
+            type="org.sabaini.moodtracker.presentation.screens.statistics.StatisticsViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
