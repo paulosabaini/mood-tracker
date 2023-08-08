@@ -7,13 +7,13 @@
 
         <variable
             name="viewModel"
-            type="org.sabaini.moodtracker.ui.viewmodels.CalendarViewModel" />
+            type="org.sabaini.moodtracker.presentation.screens.calendar.CalendarViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.fragments.CalendarFragment">
+        tools:context=".presentation.screens.calendar.CalendarFragment">
 
         <RelativeLayout
             android:id="@+id/yearChanger"
