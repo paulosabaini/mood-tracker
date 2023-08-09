@@ -3,16 +3,16 @@
     <item
         android:id="@+id/calendarFragment"
         android:enabled="true"
-        android:icon="@drawable/calendar"
+        android:icon="@drawable/today"
         android:title="" />
     <item
         android:id="@+id/statisticsFragment"
         android:enabled="true"
-        android:icon="@drawable/statistics"
+        android:icon="@drawable/bar_chart"
         android:title="" />
     <item
         android:id="@+id/settingsFragment"
         android:enabled="true"
-        android:icon="@drawable/settings"
+        android:icon="@drawable/tune"
         android:title="" />
 </menu>

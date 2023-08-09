@@ -1,7 +1,8 @@
 package org.sabaini.moodtracker.presentation
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.emoji.bundled.BundledEmojiCompatConfig
 import androidx.emoji.text.EmojiCompat
 import androidx.navigation.fragment.NavHostFragment
@@ -20,6 +21,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.Theme_MoodTracker)
         super.onCreate(savedInstanceState)
+        installSplashScreen()
         setContentView(R.layout.activity_main)
 
         setupViews()
@@ -32,9 +34,8 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
 
         // Setting Navigation Controller with the BottomNavigationView
-        findViewById<BottomNavigationView>(R.id.bottom_navigation).setupWithNavController(
-            navController
-        )
+        findViewById<BottomNavigationView>(R.id.bottom_navigation)
+            .setupWithNavController(navController)
 
         // Configure EmojiCompat
         EmojiCompat.init(emojiConfig)

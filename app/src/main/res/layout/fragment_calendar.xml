@@ -36,7 +36,7 @@
                 android:background="@null"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
-                android:src="@drawable/navigate_before"
+                android:src="@drawable/chevron_left"
                 android:tint="@color/ink" />
 
             <TextView
@@ -59,7 +59,7 @@
                 android:background="@null"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
-                android:src="@drawable/navigate_next"
+                android:src="@drawable/chevron_right"
                 android:tint="@color/ink" />
 
         </RelativeLayout>
