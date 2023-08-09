@@ -66,7 +66,7 @@ class CalendarFragment : Fragment() {
             // Will be set when this container is bound. See the dayBinder.
             lateinit var day: CalendarDay
 
-            val textView = view.findViewById<TextView>(R.id.calendarDayText)
+            val textView = view.findViewById<TextView>(R.id.calendar_day_text)
 
             init {
                 textView.setOnClickListener {
@@ -147,10 +147,10 @@ class CalendarFragment : Fragment() {
 
         /*
          * Create the view container which acts as a view holder for each month header.
-         * The view passed in here is the inflated month header view resource calendar_header_layout.xml.
+         * The view passed in here is the inflated month header view resource calendar_header.xml.
          */
         class MonthViewContainer(view: View) : ViewContainer(view) {
-            val textView = view.findViewById<TextView>(R.id.calendarHeaderText)
+            val textView = view.findViewById<TextView>(R.id.calendar_header_text)
         }
 
         /*

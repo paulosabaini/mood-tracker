@@ -1,6 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/legendLayout"
+    android:id="@+id/days_of_the_week_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center"
@@ -8,7 +8,7 @@
     tools:ignore="HardcodedText">
 
     <TextView
-        android:id="@+id/legendText1"
+        android:id="@+id/sunday"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -18,7 +18,7 @@
         android:textSize="14sp" />
 
     <TextView
-        android:id="@+id/legendText2"
+        android:id="@+id/monday"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -28,7 +28,7 @@
         android:textSize="14sp" />
 
     <TextView
-        android:id="@+id/legendText3"
+        android:id="@+id/tuesday"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -38,7 +38,7 @@
         android:textSize="14sp" />
 
     <TextView
-        android:id="@+id/legendText4"
+        android:id="@+id/wednesday"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -48,7 +48,7 @@
         android:textSize="14sp" />
 
     <TextView
-        android:id="@+id/legendText5"
+        android:id="@+id/thursday"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -58,7 +58,7 @@
         android:textSize="14sp" />
 
     <TextView
-        android:id="@+id/legendText6"
+        android:id="@+id/friday"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -68,7 +68,7 @@
         android:textSize="14sp" />
 
     <TextView
-        android:id="@+id/legendText7"
+        android:id="@+id/saturday"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
