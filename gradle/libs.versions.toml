@@ -20,6 +20,7 @@ timber                              = "5.0.1"
 calendar-view                       = "1.0.2"
 navigation                          = "2.6.0"
 emoji                               = "1.1.0"
+splashscreen                        = "1.0.0"
 
 # test libraries
 test-junit                          = "4.13.2"
@@ -63,6 +64,7 @@ room                                = { module = "androidx.room:room-runtime", v
 room-compiler                       = { module = "androidx.room:room-compiler", version.ref = "room" }
 room-ktx                            = { module = "androidx.room:room-ktx", version.ref = "room" }
 timber                              = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
+splashscreen                        = { module = "androidx.core:core-splashscreen", version.ref = "splashscreen" }
 
 # test libraries
 test-core                           = { module = "androidx.test:core", version.ref = "test-core" }
