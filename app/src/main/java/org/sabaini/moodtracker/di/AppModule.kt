@@ -8,11 +8,13 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import org.sabaini.moodtracker.data.local.dao.MoodTrackerDao
+import org.sabaini.moodtracker.data.local.dao.MoodDao
 import org.sabaini.moodtracker.data.local.db.MoodTrackerDatabase
-import org.sabaini.moodtracker.domain.repository.MoodTrackerRepository
 import org.sabaini.moodtracker.data.repository.MoodTrackerRepositoryImpl
+import org.sabaini.moodtracker.domain.repository.MoodTrackerRepository
 import javax.inject.Singleton
+
+private const val MOOD_TRACKER_DATABASE_NAME = "mood_tracker_db"
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -22,23 +24,23 @@ object AppModule {
     @Singleton
     fun provideMoodTrackerDatabase(@ApplicationContext context: Context): MoodTrackerDatabase {
         return Room.databaseBuilder(
-            context.applicationContext,
+            context,
             MoodTrackerDatabase::class.java,
-            "moods"
+            MOOD_TRACKER_DATABASE_NAME,
         )
             .fallbackToDestructiveMigration()
             .build()
     }
 
     @Provides
-    fun provideMoodTrackerDao(database: MoodTrackerDatabase): MoodTrackerDao {
-        return database.moodTrackerDao()
+    fun provideMoodTrackerDao(database: MoodTrackerDatabase): MoodDao {
+        return database.moodDao()
     }
 
     @Provides
     @Singleton
-    fun provideMoodTrackerRepository(moodTrackerDao: MoodTrackerDao): MoodTrackerRepository {
-        return MoodTrackerRepositoryImpl(moodTrackerDao)
+    fun provideMoodTrackerRepository(moodDao: MoodDao): MoodTrackerRepository {
+        return MoodTrackerRepositoryImpl(moodDao)
     }
 
     @Provides

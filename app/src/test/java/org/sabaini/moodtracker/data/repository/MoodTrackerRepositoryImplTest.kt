@@ -14,7 +14,7 @@ import org.mockito.junit.MockitoJUnitRunner
 import org.sabaini.moodtracker.MainCoroutineRule
 import org.sabaini.moodtracker.data.local.model.DatabaseMood
 import org.sabaini.moodtracker.data.local.model.DatabaseStatistics
-import org.sabaini.moodtracker.data.local.dao.MoodTrackerDao
+import org.sabaini.moodtracker.data.local.dao.MoodDao
 import org.sabaini.moodtracker.domain.model.Mood
 import java.time.LocalDate
 
@@ -29,7 +29,7 @@ class MoodTrackerRepositoryImplTest {
     var mainCoroutineRule = MainCoroutineRule()
 
     @Mock
-    private lateinit var dao: MoodTrackerDao
+    private lateinit var dao: MoodDao
 
     private lateinit var repository: MoodTrackerRepositoryImpl
     private lateinit var data: MutableList<DatabaseMood>

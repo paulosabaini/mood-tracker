@@ -3,7 +3,7 @@ package org.sabaini.moodtracker.data.repository
 import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import org.sabaini.moodtracker.data.local.dao.MoodTrackerDao
+import org.sabaini.moodtracker.data.local.dao.MoodDao
 import org.sabaini.moodtracker.data.local.model.DatabaseMood
 import org.sabaini.moodtracker.data.local.model.DatabaseStatistics
 import org.sabaini.moodtracker.data.mapper.toDomainModel
@@ -16,14 +16,14 @@ import java.lang.Exception
 import java.time.LocalDate
 import javax.inject.Inject
 
-class MoodTrackerRepositoryImpl @Inject constructor(private val moodTrackerDao: MoodTrackerDao) :
+class MoodTrackerRepositoryImpl @Inject constructor(private val moodDao: MoodDao) :
     MoodTrackerRepository {
 
     override suspend fun getMoods(): List<Mood>? {
         var databaseMoods: List<DatabaseMood>? = null
         withContext(Dispatchers.IO) {
             try {
-                databaseMoods = moodTrackerDao.getAllMoods()
+                databaseMoods = moodDao.getAllMoods()
             } catch (e: Exception) {
                 Log.d("Exception", e.toString())
             }
@@ -35,7 +35,7 @@ class MoodTrackerRepositoryImpl @Inject constructor(private val moodTrackerDao: 
         withContext(Dispatchers.IO) {
             try {
                 val newMood = DatabaseMood(null, date.toEpochDay(), mood as String)
-                moodTrackerDao.insert(newMood)
+                moodDao.insert(newMood)
             } catch (e: Exception) {
                 Log.d("Exception", e.toString())
             }
@@ -45,7 +45,7 @@ class MoodTrackerRepositoryImpl @Inject constructor(private val moodTrackerDao: 
     override suspend fun updateMood(mood: Mood) {
         withContext(Dispatchers.IO) {
             try {
-                moodTrackerDao.update(mood.toEntityModel())
+                moodDao.update(mood.toEntityModel())
             } catch (e: Exception) {
                 Log.d("Exception", e.toString())
             }
@@ -57,9 +57,9 @@ class MoodTrackerRepositoryImpl @Inject constructor(private val moodTrackerDao: 
         withContext(Dispatchers.IO) {
             try {
                 if (begin == null && end == null) {
-                    statistics = moodTrackerDao.allTimeStatistics()
+                    statistics = moodDao.allTimeStatistics()
                 } else {
-                    statistics = moodTrackerDao.periodStatistics(begin!!, end!!)
+                    statistics = moodDao.periodStatistics(begin!!, end!!)
                 }
             } catch (e: Exception) {
                 Log.d("Exception", e.toString())

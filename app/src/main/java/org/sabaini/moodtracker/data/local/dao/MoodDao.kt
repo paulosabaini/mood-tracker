@@ -1,11 +1,15 @@
 package org.sabaini.moodtracker.data.local.dao
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import androidx.room.Update
 import org.sabaini.moodtracker.data.local.model.DatabaseMood
 import org.sabaini.moodtracker.data.local.model.DatabaseStatistics
 
 @Dao
-interface MoodTrackerDao {
+interface MoodDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(databaseMood: DatabaseMood)

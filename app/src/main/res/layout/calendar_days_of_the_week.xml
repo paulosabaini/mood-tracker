@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="Sun"
+        android:text="@string/sun"
         android:textColor="@color/gray"
         android:textSize="14sp" />
 
@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="Mon"
+        android:text="@string/mon"
         android:textColor="@color/gray"
         android:textSize="14sp" />
 
@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="Tue"
+        android:text="@string/tue"
         android:textColor="@color/gray"
         android:textSize="14sp" />
 
@@ -43,7 +43,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="Wed"
+        android:text="@string/wed"
         android:textColor="@color/gray"
         android:textSize="14sp" />
 
@@ -53,7 +53,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="Thu"
+        android:text="@string/thu"
         android:textColor="@color/gray"
         android:textSize="14sp" />
 
@@ -63,7 +63,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="Fri"
+        android:text="@string/fri"
         android:textColor="@color/gray"
         android:textSize="14sp" />
 
@@ -73,7 +73,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="Sat"
+        android:text="@string/sat"
         android:textColor="@color/gray"
         android:textSize="14sp" />
 
