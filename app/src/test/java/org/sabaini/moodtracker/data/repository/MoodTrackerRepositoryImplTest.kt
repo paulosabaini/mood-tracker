@@ -12,7 +12,7 @@ import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
 import org.sabaini.moodtracker.MainCoroutineRule
-import org.sabaini.moodtracker.data.local.model.DatabaseMood
+import org.sabaini.moodtracker.data.local.model.MoodEntity
 import org.sabaini.moodtracker.data.local.model.DatabaseStatistics
 import org.sabaini.moodtracker.data.local.dao.MoodDao
 import org.sabaini.moodtracker.domain.model.Mood
@@ -32,7 +32,7 @@ class MoodTrackerRepositoryImplTest {
     private lateinit var dao: MoodDao
 
     private lateinit var repository: MoodTrackerRepositoryImpl
-    private lateinit var data: MutableList<DatabaseMood>
+    private lateinit var data: MutableList<MoodEntity>
     private val statistics = mutableListOf<DatabaseStatistics>()
 
     @Before
@@ -45,8 +45,8 @@ class MoodTrackerRepositoryImplTest {
     @Test
     fun testInsertMood() = runBlocking {
         val now = LocalDate.now()
-        val m = DatabaseMood(null, now.toEpochDay(), "emoji")
-        Mockito.`when`(dao.insert(m)).then {
+        val m = MoodEntity(null, now.toEpochDay(), "emoji")
+        Mockito.`when`(dao.saveMood(m)).then {
             data.add(m)
         }
 
@@ -57,8 +57,8 @@ class MoodTrackerRepositoryImplTest {
     @Test
     fun testGetMoods() = runBlocking {
         val now = LocalDate.now()
-        val d1 = DatabaseMood(1, now.toEpochDay(), "emoji")
-        val d2 = DatabaseMood(2, now.toEpochDay(), "emoji2")
+        val d1 = MoodEntity(1, now.toEpochDay(), "emoji")
+        val d2 = MoodEntity(2, now.toEpochDay(), "emoji2")
         data.add(d1)
         data.add(d2)
         Mockito.`when`(dao.getAllMoods()).thenAnswer { data }
@@ -69,8 +69,8 @@ class MoodTrackerRepositoryImplTest {
     fun testUpdateMood() = runBlocking {
         val now = LocalDate.now()
         val m = Mood(1, now.toEpochDay(), "emoji")
-        val dm = DatabaseMood(1, now.toEpochDay(), "emoji")
-        Mockito.`when`(dao.update(dm)).then {
+        val dm = MoodEntity(1, now.toEpochDay(), "emoji")
+        Mockito.`when`(dao.saveMood(dm)).then {
             data.add(dm)
         }
         repository.updateMood(m)
@@ -80,8 +80,8 @@ class MoodTrackerRepositoryImplTest {
     @Test
     fun testGetStatisticsWithoutPeriod() = runBlocking {
         val now = LocalDate.now()
-        val d1 = DatabaseMood(1, now.toEpochDay(), "emoji")
-        val d2 = DatabaseMood(2, now.toEpochDay(), "emoji2")
+        val d1 = MoodEntity(1, now.toEpochDay(), "emoji")
+        val d2 = MoodEntity(2, now.toEpochDay(), "emoji2")
         data.add(d1)
         data.add(d2)
 
@@ -95,8 +95,8 @@ class MoodTrackerRepositoryImplTest {
     @Test
     fun testGetStatisticsWithPeriod() = runBlocking {
         val now = LocalDate.now()
-        val d1 = DatabaseMood(1, now.minusDays(1).toEpochDay(), "emoji")
-        val d2 = DatabaseMood(2, now.toEpochDay(), "emoji2")
+        val d1 = MoodEntity(1, now.minusDays(1).toEpochDay(), "emoji")
+        val d2 = MoodEntity(2, now.toEpochDay(), "emoji2")
         data.add(d1)
         data.add(d2)
 

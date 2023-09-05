@@ -1,11 +1,11 @@
 package org.sabaini.moodtracker.data.mapper
 
-import org.sabaini.moodtracker.data.local.model.DatabaseMood
+import org.sabaini.moodtracker.data.local.model.MoodEntity
 import org.sabaini.moodtracker.data.local.model.DatabaseStatistics
 import org.sabaini.moodtracker.domain.model.Mood
 import org.sabaini.moodtracker.domain.model.Statistics
 
-fun List<DatabaseMood>.toDomainModel(): List<Mood> {
+fun List<MoodEntity>.toDomainModel(): List<Mood> {
     return map {
         Mood(
             id = it.id,
@@ -25,8 +25,8 @@ fun List<DatabaseStatistics>.toStatisticsDomainModel(): List<Statistics> {
     }
 }
 
-fun Mood.toEntityModel(): DatabaseMood {
-    return DatabaseMood(
+fun Mood.toEntityModel(): MoodEntity {
+    return MoodEntity(
         id = this.id,
         date = this.date,
         mood = this.mood,

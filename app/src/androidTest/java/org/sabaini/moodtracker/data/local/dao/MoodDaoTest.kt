@@ -12,7 +12,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.sabaini.moodtracker.data.local.db.MoodTrackerDatabase
-import org.sabaini.moodtracker.data.local.model.DatabaseMood
+import org.sabaini.moodtracker.data.local.model.MoodEntity
 import java.time.LocalDate
 
 @RunWith(AndroidJUnit4::class)
@@ -40,27 +40,27 @@ class MoodDaoTest {
     @Test
     fun testGetAllMoods() = runBlocking {
         val now = LocalDate.now().toEpochDay()
-        val mood1 = DatabaseMood(1, now, "emoji")
-        val mood2 = DatabaseMood(2, now, "emoji")
-        moodDao.insert(mood1)
-        moodDao.insert(mood2)
+        val mood1 = MoodEntity(1, now, "emoji")
+        val mood2 = MoodEntity(2, now, "emoji")
+        moodDao.saveMood(mood1)
+        moodDao.saveMood(mood2)
         assertThat(moodDao.getAllMoods().size).isEqualTo(2)
     }
 
     @Test
     fun testInsertMood() = runBlocking {
         val now = LocalDate.now().toEpochDay()
-        val mood = DatabaseMood(1, now, "emoji")
-        moodDao.insert(mood)
+        val mood = MoodEntity(1, now, "emoji")
+        moodDao.saveMood(mood)
         assertThat(moodDao.getAllMoods()[0]).isEqualTo(mood)
     }
 
     @Test
     fun testUpdateMood() = runBlocking {
         val now = LocalDate.now().toEpochDay()
-        val mood = DatabaseMood(1, now, "emoji")
-        moodDao.insert(mood)
-        moodDao.update(mood.copy(mood = "mood2"))
+        val mood = MoodEntity(1, now, "emoji")
+        moodDao.saveMood(mood)
+        moodDao.saveMood(mood.copy(mood = "mood2"))
         assertThat(moodDao.getAllMoods()[0]).isNotEqualTo(mood)
     }
 
@@ -68,10 +68,10 @@ class MoodDaoTest {
     fun testPeriodStatistics() = runBlocking {
         val today = LocalDate.now().toEpochDay()
         val yesterday = LocalDate.now().minusDays(1).toEpochDay()
-        val mood1 = DatabaseMood(1, yesterday, "emoji")
-        val mood2 = DatabaseMood(2, today, "emoji")
-        moodDao.insert(mood1)
-        moodDao.insert(mood2)
+        val mood1 = MoodEntity(1, yesterday, "emoji")
+        val mood2 = MoodEntity(2, today, "emoji")
+        moodDao.saveMood(mood1)
+        moodDao.saveMood(mood2)
         val stats = moodDao.periodStatistics(today, today)
         assertThat(stats[0].mood).isEqualTo(mood2.mood)
         assertThat(stats[0].quantity).isEqualTo(1)
@@ -82,10 +82,10 @@ class MoodDaoTest {
     fun testAllTimeStatistics() = runBlocking {
         val today = LocalDate.now().toEpochDay()
         val yesterday = LocalDate.now().minusDays(1).toEpochDay()
-        val mood1 = DatabaseMood(1, yesterday, "emoji")
-        val mood2 = DatabaseMood(2, today, "emoji")
-        moodDao.insert(mood1)
-        moodDao.insert(mood2)
+        val mood1 = MoodEntity(1, yesterday, "emoji")
+        val mood2 = MoodEntity(2, today, "emoji")
+        moodDao.saveMood(mood1)
+        moodDao.saveMood(mood2)
         val stats = moodDao.allTimeStatistics()
         assertThat(stats[0].mood).isEqualTo(mood1.mood)
         assertThat(stats[0].quantity).isEqualTo(2)

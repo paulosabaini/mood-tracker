@@ -2,10 +2,10 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "9b9d0d9c5e7250b20f877205755c2b54",
+    "identityHash": "28c81f1ed1cfc711e8151001d934a7cf",
     "entities": [
       {
-        "tableName": "DatabaseMood",
+        "tableName": "mood",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `date` INTEGER NOT NULL, `mood` TEXT NOT NULL)",
         "fields": [
           {
@@ -40,7 +40,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '9b9d0d9c5e7250b20f877205755c2b54')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '28c81f1ed1cfc711e8151001d934a7cf')"
     ]
   }
 }

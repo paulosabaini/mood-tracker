@@ -4,7 +4,7 @@ import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.sabaini.moodtracker.data.local.dao.MoodDao
-import org.sabaini.moodtracker.data.local.model.DatabaseMood
+import org.sabaini.moodtracker.data.local.model.MoodEntity
 import org.sabaini.moodtracker.data.local.model.DatabaseStatistics
 import org.sabaini.moodtracker.data.mapper.toDomainModel
 import org.sabaini.moodtracker.data.mapper.toStatisticsDomainModel
@@ -20,7 +20,7 @@ class MoodTrackerRepositoryImpl @Inject constructor(private val moodDao: MoodDao
     MoodTrackerRepository {
 
     override suspend fun getMoods(): List<Mood>? {
-        var databaseMoods: List<DatabaseMood>? = null
+        var databaseMoods: List<MoodEntity>? = null
         withContext(Dispatchers.IO) {
             try {
                 databaseMoods = moodDao.getAllMoods()
@@ -34,8 +34,8 @@ class MoodTrackerRepositoryImpl @Inject constructor(private val moodDao: MoodDao
     override suspend fun insertMood(date: LocalDate, mood: CharSequence) {
         withContext(Dispatchers.IO) {
             try {
-                val newMood = DatabaseMood(null, date.toEpochDay(), mood as String)
-                moodDao.insert(newMood)
+                val newMood = MoodEntity(null, date.toEpochDay(), mood as String)
+                moodDao.saveMood(newMood)
             } catch (e: Exception) {
                 Log.d("Exception", e.toString())
             }
@@ -45,7 +45,7 @@ class MoodTrackerRepositoryImpl @Inject constructor(private val moodDao: MoodDao
     override suspend fun updateMood(mood: Mood) {
         withContext(Dispatchers.IO) {
             try {
-                moodDao.update(mood.toEntityModel())
+                moodDao.saveMood(mood.toEntityModel())
             } catch (e: Exception) {
                 Log.d("Exception", e.toString())
             }
