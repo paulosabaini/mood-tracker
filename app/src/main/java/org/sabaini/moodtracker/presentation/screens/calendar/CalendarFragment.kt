@@ -13,7 +13,6 @@ import androidx.core.content.ContextCompat
 import androidx.emoji.text.EmojiCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.kizitonwose.calendarview.CalendarView
 import com.kizitonwose.calendarview.model.CalendarDay
 import com.kizitonwose.calendarview.model.CalendarMonth
 import com.kizitonwose.calendarview.model.DayOwner
@@ -24,6 +23,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.sabaini.moodtracker.R
 import org.sabaini.moodtracker.databinding.FragmentCalendarBinding
 import java.time.DayOfWeek
+import java.time.Year
 import java.time.YearMonth
 import java.util.*
 
@@ -31,31 +31,27 @@ import java.util.*
 class CalendarFragment : Fragment() {
 
     private val viewModel: CalendarViewModel by viewModels()
+    private lateinit var binding: FragmentCalendarBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val binding = FragmentCalendarBinding.inflate(layoutInflater)
-
+        binding = FragmentCalendarBinding.inflate(layoutInflater)
         binding.lifecycleOwner = this
-
         binding.viewModel = viewModel
 
-        // Start the calendar
-        setupCalendar(binding.calendarView)
+        viewModel.displayYear.observe(viewLifecycleOwner, ::onDisplayYear)
 
         // Set the calendar to the previous year
         binding.previousYear.setOnClickListener {
             viewModel.decrementDisplayYear()
-            setupCalendar(binding.calendarView)
         }
 
         // Set the calendar to the next year
         binding.nextYear.setOnClickListener {
             viewModel.incrementDisplayYear()
-            setupCalendar(binding.calendarView)
         }
 
         /*
@@ -174,17 +170,15 @@ class CalendarFragment : Fragment() {
     /*
     * Setup the Calendar View
     */
-    private fun setupCalendar(calendar: CalendarView) {
-        val year = viewModel.displayYear.value
-
-        calendar.setup(
-            YearMonth.of(year!!.value, 1),
+    private fun onDisplayYear(year: Year) {
+        binding.calendarView.setup(
+            YearMonth.of(year.value, 1),
             YearMonth.of(year.value, 12),
             DayOfWeek.SUNDAY
         )
 
         if (year.value == YearMonth.now().year) {
-            calendar.scrollToMonth(YearMonth.now())
+            binding.calendarView.scrollToMonth(YearMonth.now())
         }
     }
 
