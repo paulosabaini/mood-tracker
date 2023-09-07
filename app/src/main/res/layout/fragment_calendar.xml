@@ -64,12 +64,12 @@
 
         </RelativeLayout>
 
-        <com.kizitonwose.calendarview.CalendarView
+        <com.kizitonwose.calendar.view.CalendarView
             android:id="@+id/calendar_view"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:cv_dayViewResource="@layout/calendar_day"
-            app:cv_monthHeaderResource="@layout/calendar_header"
+            app:cv_dayViewResource="@layout/calendar_day_layout"
+            app:cv_monthHeaderResource="@layout/calendar_day_titles_container"
             app:cv_orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
