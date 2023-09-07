@@ -42,6 +42,9 @@ class CalendarFragment : Fragment() {
         binding.viewModel = viewModel
 
         viewModel.displayYear.observe(viewLifecycleOwner, ::onDisplayYear)
+        viewModel.moods.observe(viewLifecycleOwner) {
+            binding.calendarView.notifyCalendarChanged()
+        }
 
         binding.previousYear.setOnClickListener {
             viewModel.decrementDisplayYear()
