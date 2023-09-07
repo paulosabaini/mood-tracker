@@ -59,23 +59,13 @@ class CalendarFragment : Fragment() {
                 // Called every time we need to reuse a container.
                 override fun bind(container: DayViewContainer, data: CalendarDay) {
                     val textView = container.textView
-                    textView.text = data.date.dayOfMonth.toString()
-
-                    viewModel.moods.observe(viewLifecycleOwner) {
-                        val moods = viewModel.filterMoods()
-                        val mood = moods.find { mood -> data.date.toEpochDay() == mood.date }
-                        if (mood != null) {
-                            textView.text = mood.mood
-                            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 32f)
-                        }
-                    }
+                    val dayText = viewModel.getDayText(data.date)
+                    textView.text = dayText.first
+                    textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, dayText.second)
 
                     container.onClick = {
-                        // Check the day owner as we do not want to select in or out dates.
-                        if (data.position == DayPosition.MonthDate) {
-                            if (viewModel.today.value == data.date) {
-                                showMenu(textView)
-                            }
+                        if (viewModel.shouldDisplayEmojiPicker(data)) {
+                            showMenu(textView)
                         }
                     }
 
