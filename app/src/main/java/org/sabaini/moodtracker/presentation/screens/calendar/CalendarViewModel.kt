@@ -2,6 +2,7 @@ package org.sabaini.moodtracker.presentation.screens.calendar
 
 import androidx.lifecycle.*
 import com.kizitonwose.calendar.core.CalendarDay
+import com.kizitonwose.calendar.core.CalendarMonth
 import com.kizitonwose.calendar.core.DayPosition
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -10,6 +11,8 @@ import org.sabaini.moodtracker.domain.repository.MoodTrackerRepository
 import org.sabaini.moodtracker.presentation.screens.calendar.Emojis.EMOJIS
 import java.time.LocalDate
 import java.time.Year
+import java.time.YearMonth
+import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -65,8 +68,8 @@ class CalendarViewModel @Inject constructor(private val moodTrackerRepositoryImp
                         Mood(
                             id = lastMood.id,
                             date = lastMood.date,
-                            mood = mood as String
-                        )
+                            mood = mood as String,
+                        ),
                     )
                 }
             }
@@ -87,4 +90,8 @@ class CalendarViewModel @Inject constructor(private val moodTrackerRepositoryImp
 
     fun shouldDisplayEmojiPicker(data: CalendarDay) =
         data.position == DayPosition.MonthDate && _today.value == data.date
+
+    fun getMonthName(data: CalendarMonth) = data.yearMonth.month.name.uppercase(Locale.getDefault())
+
+    fun isCurrentYear(year: Year) = year.value == YearMonth.now().year
 }

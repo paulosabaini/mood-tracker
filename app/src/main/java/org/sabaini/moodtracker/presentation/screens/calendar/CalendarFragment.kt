@@ -1,14 +1,16 @@
 package org.sabaini.moodtracker.presentation.screens.calendar
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.AbsoluteSizeSpan
 import android.util.TypedValue
-import android.view.*
 import android.view.LayoutInflater
-import android.widget.*
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
+import android.widget.PopupMenu
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.emoji.text.EmojiCompat
 import androidx.fragment.app.Fragment
@@ -24,10 +26,14 @@ import org.sabaini.moodtracker.databinding.FragmentCalendarBinding
 import java.time.DayOfWeek
 import java.time.Year
 import java.time.YearMonth
-import java.util.*
 
 @AndroidEntryPoint
 class CalendarFragment : Fragment() {
+
+    companion object {
+        private const val START_MONTH = 1
+        private const val END_MONTH = 12
+    }
 
     private val viewModel: CalendarViewModel by viewModels()
     private lateinit var binding: FragmentCalendarBinding
@@ -35,7 +41,7 @@ class CalendarFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         binding = FragmentCalendarBinding.inflate(layoutInflater)
         binding.lifecycleOwner = this
@@ -79,17 +85,18 @@ class CalendarFragment : Fragment() {
                                 textView.setTextColor(
                                     ContextCompat.getColor(
                                         context!!,
-                                        R.color.ink
-                                    )
+                                        R.color.ink,
+                                    ),
                                 )
                                 textView.setBackgroundResource(R.drawable.day_selected_background)
                             }
+
                             else -> {
                                 textView.setTextColor(
                                     ContextCompat.getColor(
                                         context!!,
-                                        R.color.ink
-                                    )
+                                        R.color.ink,
+                                    ),
                                 )
                                 textView.setBackgroundResource(R.drawable.day_background)
                             }
@@ -100,12 +107,11 @@ class CalendarFragment : Fragment() {
                             textView.setTextColor(
                                 ContextCompat.getColor(
                                     context!!,
-                                    R.color.red
-                                )
+                                    R.color.red,
+                                ),
                             )
                             textView.setBackgroundResource(R.drawable.day_weekend_background)
                         }
-
                     } else {
                         textView.visibility = View.INVISIBLE
                     }
@@ -118,9 +124,7 @@ class CalendarFragment : Fragment() {
                 override fun create(view: View) = MonthViewContainer(view)
 
                 override fun bind(container: MonthViewContainer, data: CalendarMonth) {
-                    @SuppressLint("SetTextI18n") // Concatenation warning for `setText` call.
-                    container.textView.text =
-                        data.yearMonth.month.name.uppercase(Locale.getDefault())
+                    container.textView.text = viewModel.getMonthName(data)
                 }
             }
 
@@ -129,12 +133,12 @@ class CalendarFragment : Fragment() {
 
     private fun onDisplayYear(year: Year) {
         binding.calendarView.setup(
-            YearMonth.of(year.value, 1),
-            YearMonth.of(year.value, 12),
-            DayOfWeek.SUNDAY
+            startMonth = YearMonth.of(year.value, START_MONTH),
+            endMonth = YearMonth.of(year.value, END_MONTH),
+            firstDayOfWeek = DayOfWeek.SUNDAY,
         )
 
-        if (year.value == YearMonth.now().year) {
+        if (viewModel.isCurrentYear(year)) {
             binding.calendarView.scrollToMonth(YearMonth.now())
         }
     }
@@ -148,7 +152,7 @@ class CalendarFragment : Fragment() {
                 AbsoluteSizeSpan(32, true),
                 0,
                 emoji.length,
-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE,
             )
             popup.menu.add(emoji)
         }
