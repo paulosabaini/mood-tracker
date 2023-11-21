@@ -9,6 +9,7 @@ import kotlinx.coroutines.launch
 import org.sabaini.moodtracker.domain.model.Mood
 import org.sabaini.moodtracker.domain.repository.MoodTrackerRepository
 import org.sabaini.moodtracker.presentation.screens.calendar.Emojis.EMOJIS
+import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.Year
 import java.time.YearMonth
@@ -94,4 +95,9 @@ class CalendarViewModel @Inject constructor(private val moodTrackerRepositoryImp
     fun getMonthName(data: CalendarMonth) = data.yearMonth.month.name.uppercase(Locale.getDefault())
 
     fun isCurrentYear(year: Year) = year.value == YearMonth.now().year
+
+    fun isToday(data: CalendarDay) = data.date == _today.value
+
+    fun isWeekend(data: CalendarDay) =
+        data.date.dayOfWeek == DayOfWeek.SATURDAY || data.date.dayOfWeek == DayOfWeek.SUNDAY
 }

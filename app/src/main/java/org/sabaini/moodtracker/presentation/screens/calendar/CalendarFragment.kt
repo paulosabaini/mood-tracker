@@ -52,20 +52,29 @@ class CalendarFragment : Fragment() {
             binding.calendarView.notifyCalendarChanged()
         }
 
-        binding.previousYear.setOnClickListener {
-            viewModel.decrementDisplayYear()
-        }
+        setupListeners()
+        setupDayBinder()
+        setupMonthHeaderBinder()
 
-        binding.nextYear.setOnClickListener {
-            viewModel.incrementDisplayYear()
-        }
+        return binding.root
+    }
 
+    private fun setupMonthHeaderBinder() {
+        binding.calendarView.monthHeaderBinder =
+            object : MonthHeaderFooterBinder<MonthViewContainer> {
+                override fun create(view: View) = MonthViewContainer(view)
+
+                override fun bind(container: MonthViewContainer, data: CalendarMonth) {
+                    container.textView.text = viewModel.getMonthName(data)
+                }
+            }
+    }
+
+    private fun setupDayBinder() {
         binding.calendarView.dayBinder =
             object : MonthDayBinder<DayViewContainer> {
-                // Called only when a new container is needed.
                 override fun create(view: View) = DayViewContainer(view)
 
-                // Called every time we need to reuse a container.
                 override fun bind(container: DayViewContainer, data: CalendarDay) {
                     val textView = container.textView
                     val dayText = viewModel.getDayText(data.date)
@@ -78,57 +87,19 @@ class CalendarFragment : Fragment() {
                         }
                     }
 
-                    if (data.position == DayPosition.MonthDate) {
-                        textView.visibility = View.VISIBLE
-                        when (data.date) {
-                            viewModel.today.value -> {
-                                textView.setTextColor(
-                                    ContextCompat.getColor(
-                                        context!!,
-                                        R.color.ink,
-                                    ),
-                                )
-                                textView.setBackgroundResource(R.drawable.day_selected_background)
-                            }
-
-                            else -> {
-                                textView.setTextColor(
-                                    ContextCompat.getColor(
-                                        context!!,
-                                        R.color.ink,
-                                    ),
-                                )
-                                textView.setBackgroundResource(R.drawable.day_background)
-                            }
-                        }
-
-                        val dayOfWeek = data.date.dayOfWeek
-                        if (dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) {
-                            textView.setTextColor(
-                                ContextCompat.getColor(
-                                    context!!,
-                                    R.color.red,
-                                ),
-                            )
-                            textView.setBackgroundResource(R.drawable.day_weekend_background)
-                        }
-                    } else {
-                        textView.visibility = View.INVISIBLE
-                    }
+                    setDayStyle(data, textView)
                 }
             }
+    }
 
-        binding.calendarView.monthHeaderBinder =
-            object : MonthHeaderFooterBinder<MonthViewContainer> {
+    private fun setupListeners() {
+        binding.previousYear.setOnClickListener {
+            viewModel.decrementDisplayYear()
+        }
 
-                override fun create(view: View) = MonthViewContainer(view)
-
-                override fun bind(container: MonthViewContainer, data: CalendarMonth) {
-                    container.textView.text = viewModel.getMonthName(data)
-                }
-            }
-
-        return binding.root
+        binding.nextYear.setOnClickListener {
+            viewModel.incrementDisplayYear()
+        }
     }
 
     private fun onDisplayYear(year: Year) {
@@ -143,8 +114,32 @@ class CalendarFragment : Fragment() {
         }
     }
 
-    private fun showMenu(v: View) {
-        val popup = PopupMenu(context, v)
+    private fun setDayStyle(data: CalendarDay, textView: TextView) {
+        if (data.position == DayPosition.MonthDate) {
+            textView.visibility = View.VISIBLE
+            textView.setTextColor(
+                if (viewModel.isWeekend(data)) {
+                    ContextCompat.getColor(requireContext(), R.color.red)
+                } else {
+                    ContextCompat.getColor(requireContext(), R.color.ink)
+                },
+            )
+            textView.setBackgroundResource(
+                if (viewModel.isToday(data)) {
+                    R.drawable.day_selected_background
+                } else if (viewModel.isWeekend(data)) {
+                    R.drawable.day_weekend_background
+                } else {
+                    R.drawable.day_background
+                },
+            )
+        } else {
+            textView.visibility = View.INVISIBLE
+        }
+    }
+
+    private fun showMenu(view: View) {
+        val popup = PopupMenu(context, view)
 
         viewModel.emojiList.value!!.forEach {
             val emoji = SpannableString(EmojiCompat.get().process(it))
@@ -158,8 +153,8 @@ class CalendarFragment : Fragment() {
         }
 
         popup.setOnMenuItemClickListener { menuItem: MenuItem ->
-            (v as TextView).text = menuItem.title
-            v.setTextSize(TypedValue.COMPLEX_UNIT_SP, 32f)
+            (view as TextView).text = menuItem.title
+            view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 32f)
             viewModel.saveMood(menuItem.title.toString())
             true
         }
