@@ -1,6 +1,13 @@
 package org.sabaini.moodtracker.presentation.screens.calendar
 
-import androidx.lifecycle.*
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.AbsoluteSizeSpan
+import androidx.emoji.text.EmojiCompat
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.kizitonwose.calendar.core.CalendarDay
 import com.kizitonwose.calendar.core.CalendarMonth
 import com.kizitonwose.calendar.core.DayPosition
@@ -100,4 +107,17 @@ class CalendarViewModel @Inject constructor(private val moodTrackerRepositoryImp
 
     fun isWeekend(data: CalendarDay) =
         data.date.dayOfWeek == DayOfWeek.SATURDAY || data.date.dayOfWeek == DayOfWeek.SUNDAY
+
+    fun getFormattedEmojiList(): List<SpannableString> {
+        return _emojisList.value?.map {
+            val emoji = SpannableString(EmojiCompat.get().process(it))
+            emoji.setSpan(
+                AbsoluteSizeSpan(32, true),
+                0,
+                emoji.length,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE,
+            )
+            emoji
+        } ?: emptyList()
+    }
 }

@@ -1,18 +1,13 @@
 package org.sabaini.moodtracker.presentation.screens.calendar
 
 import android.os.Bundle
-import android.text.SpannableString
-import android.text.Spanned
-import android.text.style.AbsoluteSizeSpan
 import android.util.TypedValue
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.emoji.text.EmojiCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.kizitonwose.calendar.core.CalendarDay
@@ -138,28 +133,15 @@ class CalendarFragment : Fragment() {
         }
     }
 
-    private fun showMenu(view: View) {
-        val popup = PopupMenu(context, view)
-
-        viewModel.emojiList.value!!.forEach {
-            val emoji = SpannableString(EmojiCompat.get().process(it))
-            emoji.setSpan(
-                AbsoluteSizeSpan(32, true),
-                0,
-                emoji.length,
-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE,
-            )
-            popup.menu.add(emoji)
+    private fun showMenu(textView: TextView) {
+        val popup = PopupMenu(context, textView)
+        viewModel.getFormattedEmojiList().forEach {
+            popup.menu.add(it)
         }
-
-        popup.setOnMenuItemClickListener { menuItem: MenuItem ->
-            (view as TextView).text = menuItem.title
-            view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 32f)
+        popup.setOnMenuItemClickListener { menuItem ->
             viewModel.saveMood(menuItem.title.toString())
             true
         }
-
-        // Show the popup menu.
         popup.show()
     }
 }
