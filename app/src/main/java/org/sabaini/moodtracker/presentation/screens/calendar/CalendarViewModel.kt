@@ -29,7 +29,7 @@ class CalendarViewModel @Inject constructor(private val moodTrackerRepositoryImp
 
     private val today = LocalDate.now()
 
-    private val _displayYear = MutableLiveData<Year>()
+    private val _displayYear = MutableLiveData(Year.now())
     val displayYear: LiveData<Year> = _displayYear
 
     private val _moods = MutableLiveData<List<Mood>>()
@@ -46,7 +46,6 @@ class CalendarViewModel @Inject constructor(private val moodTrackerRepositoryImp
         viewModelScope.launch {
             _moods.value = moodTrackerRepositoryImpl.getMoods()
         }
-        _displayYear.value = Year.now()
     }
 
     fun decrementDisplayYear() {
