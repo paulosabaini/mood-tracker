@@ -1,7 +1,10 @@
 package org.sabaini.moodtracker.presentation.screens.statistics
 
 import android.view.View
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import org.sabaini.moodtracker.domain.model.Statistics
@@ -25,7 +28,7 @@ class StatisticsViewModel @Inject constructor(private val moodTrackerRepositoryI
         viewModelScope.launch {
             _statistics.value = moodTrackerRepositoryImpl.getStatistics(
                 LocalDate.now().withDayOfMonth(1).toEpochDay(),
-                LocalDate.now().toEpochDay()
+                LocalDate.now().toEpochDay(),
             )
         }
     }

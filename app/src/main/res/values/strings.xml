@@ -12,4 +12,5 @@
     <string name="fri">Fri</string>
     <string name="sat">Sat</string>
     <string name="settings_screen">Settings Screen</string>
+    <string name="statistic_value">%d (%d%%)</string>
 </resources>
