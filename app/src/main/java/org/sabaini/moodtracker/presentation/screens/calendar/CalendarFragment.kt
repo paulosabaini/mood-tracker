@@ -1,218 +1,147 @@
 package org.sabaini.moodtracker.presentation.screens.calendar
 
-import android.annotation.SuppressLint
 import android.os.Bundle
-import android.text.SpannableString
-import android.text.Spanned
-import android.text.style.AbsoluteSizeSpan
 import android.util.TypedValue
-import android.view.*
 import android.view.LayoutInflater
-import android.widget.*
+import android.view.View
+import android.view.ViewGroup
+import android.widget.PopupMenu
+import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.emoji.text.EmojiCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.kizitonwose.calendarview.CalendarView
-import com.kizitonwose.calendarview.model.CalendarDay
-import com.kizitonwose.calendarview.model.CalendarMonth
-import com.kizitonwose.calendarview.model.DayOwner
-import com.kizitonwose.calendarview.ui.DayBinder
-import com.kizitonwose.calendarview.ui.MonthHeaderFooterBinder
-import com.kizitonwose.calendarview.ui.ViewContainer
+import com.kizitonwose.calendar.core.CalendarDay
+import com.kizitonwose.calendar.core.CalendarMonth
+import com.kizitonwose.calendar.core.DayPosition
+import com.kizitonwose.calendar.view.MonthDayBinder
+import com.kizitonwose.calendar.view.MonthHeaderFooterBinder
 import dagger.hilt.android.AndroidEntryPoint
 import org.sabaini.moodtracker.R
 import org.sabaini.moodtracker.databinding.FragmentCalendarBinding
 import java.time.DayOfWeek
+import java.time.Year
 import java.time.YearMonth
-import java.util.*
 
 @AndroidEntryPoint
 class CalendarFragment : Fragment() {
 
+    companion object {
+        private const val START_MONTH = 1
+        private const val END_MONTH = 12
+    }
+
     private val viewModel: CalendarViewModel by viewModels()
+    private lateinit var binding: FragmentCalendarBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
-        val binding = FragmentCalendarBinding.inflate(layoutInflater)
-
+        binding = FragmentCalendarBinding.inflate(layoutInflater)
         binding.lifecycleOwner = this
-
         binding.viewModel = viewModel
 
-        // Start the calendar
-        setupCalendar(binding.calendarView)
-
-        // Set the calendar to the previous year
-        binding.previousYear.setOnClickListener {
-            viewModel.decrementDisplayYear()
-            setupCalendar(binding.calendarView)
+        viewModel.displayYear.observe(viewLifecycleOwner, ::onDisplayYear)
+        viewModel.moods.observe(viewLifecycleOwner) {
+            binding.calendarView.notifyCalendarChanged()
         }
 
-        // Set the calendar to the next year
-        binding.nextYear.setOnClickListener {
-            viewModel.incrementDisplayYear()
-            setupCalendar(binding.calendarView)
-        }
-
-        /*
-         * Create the view container which acts as a view holder for each date cell.
-         * The view passed in here is the inflated day view resource calendar_day_layout.xml.
-         */
-        class DayViewContainer(view: View) : ViewContainer(view) {
-            // Will be set when this container is bound. See the dayBinder.
-            lateinit var day: CalendarDay
-
-            val textView = view.findViewById<TextView>(R.id.calendarDayText)
-
-            init {
-                textView.setOnClickListener {
-                    // Check the day owner as we do not want to select in or out dates.
-                    if (day.owner == DayOwner.THIS_MONTH) {
-                        if (viewModel.today.value == day.date) {
-                            showMenu(textView)
-                        }
-                    }
-                }
-            }
-        }
-
-        /*
-         * Provide a DayBinder for the CalendarView using your DayViewContainer type.
-         */
-        binding.calendarView.dayBinder =
-            object : DayBinder<DayViewContainer> {
-                // Called only when a new container is needed.
-                override fun create(view: View) = DayViewContainer(view)
-
-                // Called every time we need to reuse a container.
-                override fun bind(container: DayViewContainer, day: CalendarDay) {
-                    container.day = day
-                    val textView = container.textView
-                    textView.text = day.date.dayOfMonth.toString()
-
-                    viewModel.moods.observe(
-                        viewLifecycleOwner,
-                        {
-                            val moods = viewModel.filterMoods()
-                            val mood = moods.find { mood -> day.date.toEpochDay() == mood.date }
-                            if (mood != null) {
-                                textView.text = mood.mood
-                                textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 32f)
-                            }
-                        })
-
-                    if (day.owner == DayOwner.THIS_MONTH) {
-                        textView.visibility = View.VISIBLE
-                        when (day.date) {
-                            viewModel.today.value -> {
-                                textView.setTextColor(
-                                    ContextCompat.getColor(
-                                        context!!,
-                                        R.color.ink
-                                    )
-                                )
-                                textView.setBackgroundResource(R.drawable.day_selected_background)
-                            }
-                            else -> {
-                                textView.setTextColor(
-                                    ContextCompat.getColor(
-                                        context!!,
-                                        R.color.ink
-                                    )
-                                )
-                                textView.setBackgroundResource(R.drawable.day_background)
-                            }
-                        }
-
-                        val dayOfWeek = day.date.dayOfWeek
-                        if (dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) {
-                            textView.setTextColor(
-                                ContextCompat.getColor(
-                                    context!!,
-                                    R.color.red
-                                )
-                            )
-                            textView.setBackgroundResource(R.drawable.day_weekend_background)
-                        }
-
-                    } else {
-                        textView.visibility = View.INVISIBLE
-                    }
-                }
-            }
-
-        /*
-         * Create the view container which acts as a view holder for each month header.
-         * The view passed in here is the inflated month header view resource calendar_header_layout.xml.
-         */
-        class MonthViewContainer(view: View) : ViewContainer(view) {
-            val textView = view.findViewById<TextView>(R.id.calendarHeaderText)
-        }
-
-        /*
-        * Provide a MonthHeaderFooterBinder for the CalendarView using your MonthViewContainer type.
-        */
-        binding.calendarView.monthHeaderBinder =
-            object : MonthHeaderFooterBinder<MonthViewContainer> {
-
-                override fun create(view: View) = MonthViewContainer(view)
-
-                override fun bind(container: MonthViewContainer, month: CalendarMonth) {
-                    @SuppressLint("SetTextI18n") // Concatenation warning for `setText` call.
-                    container.textView.text =
-                        month.yearMonth.month.name.uppercase(Locale.getDefault())
-                }
-            }
+        setupListeners()
+        setupDayBinder()
+        setupMonthHeaderBinder()
 
         return binding.root
     }
 
-    /*
-    * Setup the Calendar View
-    */
-    private fun setupCalendar(calendar: CalendarView) {
-        val year = viewModel.displayYear.value
+    private fun setupMonthHeaderBinder() {
+        binding.calendarView.monthHeaderBinder =
+            object : MonthHeaderFooterBinder<MonthViewContainer> {
+                override fun create(view: View) = MonthViewContainer(view)
 
-        calendar.setup(
-            YearMonth.of(year!!.value, 1),
-            YearMonth.of(year.value, 12),
-            DayOfWeek.SUNDAY
-        )
+                override fun bind(container: MonthViewContainer, data: CalendarMonth) {
+                    container.textView.text = viewModel.getMonthName(data)
+                }
+            }
+    }
 
-        if (year.value == YearMonth.now().year) {
-            calendar.scrollToMonth(YearMonth.now())
+    private fun setupDayBinder() {
+        binding.calendarView.dayBinder =
+            object : MonthDayBinder<DayViewContainer> {
+                override fun create(view: View) = DayViewContainer(view)
+
+                override fun bind(container: DayViewContainer, data: CalendarDay) {
+                    val textView = container.textView
+                    val dayText = viewModel.getDayText(data.date)
+                    textView.text = dayText.first
+                    textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, dayText.second)
+
+                    container.onClick = {
+                        if (viewModel.shouldDisplayEmojiPicker(data)) {
+                            showMenu(textView)
+                        }
+                    }
+
+                    setDayStyle(data, textView)
+                }
+            }
+    }
+
+    private fun setupListeners() {
+        binding.previousYear.setOnClickListener {
+            viewModel.decrementDisplayYear()
+        }
+
+        binding.nextYear.setOnClickListener {
+            viewModel.incrementDisplayYear()
         }
     }
 
-    /*
-    * Display a popup menu with emojis that can be selected
-    */
-    private fun showMenu(v: View) {
-        val popup = PopupMenu(context, v)
+    private fun onDisplayYear(year: Year) {
+        binding.calendarView.setup(
+            startMonth = YearMonth.of(year.value, START_MONTH),
+            endMonth = YearMonth.of(year.value, END_MONTH),
+            firstDayOfWeek = DayOfWeek.SUNDAY,
+        )
 
-        viewModel.emojiList.value!!.forEach {
-            val emoji = SpannableString(EmojiCompat.get().process(it))
-            emoji.setSpan(
-                AbsoluteSizeSpan(32, true),
-                0,
-                emoji.length,
-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-            )
-            popup.menu.add(emoji)
+        if (viewModel.isCurrentYear(year)) {
+            binding.calendarView.scrollToMonth(YearMonth.now())
         }
+    }
 
-        popup.setOnMenuItemClickListener { menuItem: MenuItem ->
-            (v as TextView).text = menuItem.title
-            v.setTextSize(TypedValue.COMPLEX_UNIT_SP, 32f)
+    private fun setDayStyle(data: CalendarDay, textView: TextView) {
+        if (data.position == DayPosition.MonthDate) {
+            textView.visibility = View.VISIBLE
+            textView.setTextColor(
+                if (viewModel.isWeekend(data)) {
+                    ContextCompat.getColor(requireContext(), R.color.red)
+                } else {
+                    ContextCompat.getColor(requireContext(), R.color.ink)
+                },
+            )
+            textView.setBackgroundResource(
+                if (viewModel.isToday(data)) {
+                    R.drawable.day_selected_background
+                } else if (viewModel.isWeekend(data)) {
+                    R.drawable.day_weekend_background
+                } else {
+                    R.drawable.day_background
+                },
+            )
+        } else {
+            textView.visibility = View.INVISIBLE
+        }
+    }
+
+    private fun showMenu(textView: TextView) {
+        val popup = PopupMenu(context, textView)
+        viewModel.getFormattedEmojiList().forEach {
+            popup.menu.add(it)
+        }
+        popup.setOnMenuItemClickListener { menuItem ->
             viewModel.saveMood(menuItem.title.toString())
             true
         }
-
-        // Show the popup menu.
         popup.show()
     }
 }

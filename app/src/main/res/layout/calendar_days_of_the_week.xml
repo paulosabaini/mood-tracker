@@ -1,6 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/legendLayout"
+    android:id="@+id/days_of_the_week_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center"
@@ -8,72 +8,72 @@
     tools:ignore="HardcodedText">
 
     <TextView
-        android:id="@+id/legendText1"
+        android:id="@+id/sunday"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="Sun"
+        android:text="@string/sun"
         android:textColor="@color/gray"
         android:textSize="14sp" />
 
     <TextView
-        android:id="@+id/legendText2"
+        android:id="@+id/monday"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="Mon"
+        android:text="@string/mon"
         android:textColor="@color/gray"
         android:textSize="14sp" />
 
     <TextView
-        android:id="@+id/legendText3"
+        android:id="@+id/tuesday"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="Tue"
+        android:text="@string/tue"
         android:textColor="@color/gray"
         android:textSize="14sp" />
 
     <TextView
-        android:id="@+id/legendText4"
+        android:id="@+id/wednesday"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="Wed"
+        android:text="@string/wed"
         android:textColor="@color/gray"
         android:textSize="14sp" />
 
     <TextView
-        android:id="@+id/legendText5"
+        android:id="@+id/thursday"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="Thu"
+        android:text="@string/thu"
         android:textColor="@color/gray"
         android:textSize="14sp" />
 
     <TextView
-        android:id="@+id/legendText6"
+        android:id="@+id/friday"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="Fri"
+        android:text="@string/fri"
         android:textColor="@color/gray"
         android:textSize="14sp" />
 
     <TextView
-        android:id="@+id/legendText7"
+        android:id="@+id/saturday"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="Sat"
+        android:text="@string/sat"
         android:textColor="@color/gray"
         android:textSize="14sp" />
 

@@ -1,26 +1,26 @@
 [versions]
 # plugins
-android-gradle                      = "8.1.0"
+android-gradle                      = "8.1.4"
 ksp                                 = "1.9.0-1.0.12"
 
 # production libraries
-core                                = "1.10.1"
+core                                = "1.12.0"
 appcompat                           = "1.6.1"
-material                            = "1.9.0"
+material                            = "1.10.0"
 constraint-layout                   = "2.1.4"
 legacy                              = "1.0.0"
 viewmodel                           = "2.6.1"
-desugar                             = "2.0.3"
+desugar                             = "2.0.4"
 hilt                                = "2.47"
 kotlin                              = "1.9.0"
 kotlin-coroutines                   = "1.7.3"
-lifecycle                           = "2.6.1"
-room                                = "2.5.2"
+lifecycle                           = "2.6.2"
+room                                = "2.6.0"
 timber                              = "5.0.1"
-calendar-view                       = "1.0.2"
-navigation                          = "2.6.0"
-emoji                               = "1.1.0"
-splashscreen                        = "1.0.0"
+calendar-view                       = "2.3.0"
+navigation                          = "2.7.5"
+emoji                               = "28.0.0"
+splashscreen                        = "1.0.1"
 
 # test libraries
 test-junit                          = "4.13.2"
@@ -34,7 +34,7 @@ test-mockito                        = "4.5.1"
 
 # android test libraries
 test-android-runner                 = "1.5.2"
-test-espresso                            = "3.5.1"
+test-espresso                       = "3.5.1"
 
 [plugins]
 android-application                 = { id = "com.android.application", version.ref = "android-gradle" }
@@ -49,13 +49,13 @@ ksp                                 = { id = "com.google.devtools.ksp", version.
 core                                = { module = "androidx.core:core-ktx", version.ref = "core" }
 appcompat                           = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
 material                            = { module = "com.google.android.material:material", version.ref = "material" }
-constraintlayout                   = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraint-layout" }
+constraintlayout                    = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraint-layout" }
 legacy-support                      = { module = "androidx.legacy:legacy-support-v4", version.ref = "legacy" }
 navigation-fragment                 = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation" }
 navigation-ui                       = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation" }
 lifecycle-viewmodel                 = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
 desugar                             = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar" }
-calendarview                       = { module = "com.github.kizitonwose:CalendarView", version.ref = "calendar-view" }
+calendarview                        = { module =  "com.kizitonwose.calendar:view", version.ref = "calendar-view" }
 emoji                               = { module = "com.android.support:support-emoji-bundled", version.ref = "emoji" }
 hilt                                = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 hilt-compiler                       = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }

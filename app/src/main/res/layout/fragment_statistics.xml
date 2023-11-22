@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
             name="viewModel"
             type="org.sabaini.moodtracker.presentation.screens.statistics.StatisticsViewModel" />
+
+        <variable
+            name="filterType"
+            type="org.sabaini.moodtracker.presentation.screens.statistics.StatisticFilterType" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,7 +23,7 @@
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="@{viewModel::filterClick}"
+            android:onClick="@{() -> viewModel.filterClick(filterType.WEEK)}"
             android:text="@string/week"
             android:textAllCaps="false"
             android:textColor="@color/gray"
@@ -33,7 +38,7 @@
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="@{viewModel::filterClick}"
+            android:onClick="@{() -> viewModel.filterClick(filterType.MONTH)}"
             android:text="@string/month"
             android:textAllCaps="false"
             android:textColor="@color/ink"
@@ -49,7 +54,7 @@
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="@{viewModel::filterClick}"
+            android:onClick="@{() -> viewModel.filterClick(filterType.YEAR)}"
             android:text="@string/year"
             android:textAllCaps="false"
             android:textColor="@color/gray"
@@ -64,7 +69,7 @@
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="@{viewModel::filterClick}"
+            android:onClick="@{() -> viewModel.filterClick(filterType.ALL)}"
             android:text="@string/all_the_time"
             android:textAllCaps="false"
             android:textColor="@color/gray"
@@ -74,21 +79,16 @@
             app:layout_constraintStart_toEndOf="@+id/year_stats"
             app:layout_constraintTop_toTopOf="@+id/year_stats" />
 
-        <ScrollView
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/moods_stats"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/week_stats">
-
-            <LinearLayout
-                android:id="@+id/moods_stats"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" />
-        </ScrollView>
+            app:layout_constraintTop_toBottomOf="@+id/week_stats"
+            tools:listitem="@layout/statistic_item" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

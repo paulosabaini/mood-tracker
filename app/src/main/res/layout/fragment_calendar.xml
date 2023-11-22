@@ -16,20 +16,20 @@
         tools:context=".presentation.screens.calendar.CalendarFragment">
 
         <RelativeLayout
-            android:id="@+id/yearChanger"
+            android:id="@+id/year_navigation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
             android:orientation="horizontal"
-            app:layout_constraintBottom_toTopOf="@id/calendarView"
+            app:layout_constraintBottom_toTopOf="@id/calendar_view"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
 
             <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/previousYear"
+                android:id="@+id/previous_year"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
@@ -40,7 +40,7 @@
                 android:tint="@color/ink" />
 
             <TextView
-                android:id="@+id/currentYear"
+                android:id="@+id/current_year"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
@@ -52,7 +52,7 @@
                 tools:ignore="RelativeOverlap" />
 
             <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/nextYear"
+                android:id="@+id/next_year"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -64,17 +64,17 @@
 
         </RelativeLayout>
 
-        <com.kizitonwose.calendarview.CalendarView
-            android:id="@+id/calendarView"
+        <com.kizitonwose.calendar.view.CalendarView
+            android:id="@+id/calendar_view"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:cv_dayViewResource="@layout/calendar_day_layout"
-            app:cv_monthHeaderResource="@layout/calendar_header_layout"
+            app:cv_monthHeaderResource="@layout/calendar_day_titles_container"
             app:cv_orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/yearChanger" />
+            app:layout_constraintTop_toBottomOf="@id/year_navigation" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
