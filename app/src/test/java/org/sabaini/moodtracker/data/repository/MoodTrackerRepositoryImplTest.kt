@@ -12,12 +12,11 @@ import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
 import org.sabaini.moodtracker.MainCoroutineRule
-import org.sabaini.moodtracker.data.local.model.MoodEntity
-import org.sabaini.moodtracker.data.local.model.DatabaseStatistics
 import org.sabaini.moodtracker.data.local.dao.MoodDao
+import org.sabaini.moodtracker.data.local.model.DatabaseStatistics
+import org.sabaini.moodtracker.data.local.model.MoodEntity
 import org.sabaini.moodtracker.domain.model.Mood
 import java.time.LocalDate
-
 
 @RunWith(MockitoJUnitRunner::class)
 class MoodTrackerRepositoryImplTest {
@@ -37,7 +36,7 @@ class MoodTrackerRepositoryImplTest {
 
     @Before
     fun setup() {
-        MockitoAnnotations.initMocks(this)
+        MockitoAnnotations.openMocks(this)
         repository = MoodTrackerRepositoryImpl(dao)
         data = mutableListOf()
     }
@@ -86,7 +85,7 @@ class MoodTrackerRepositoryImplTest {
         data.add(d2)
 
         Mockito.`when`(dao.allTimeStatistics()).thenAnswer {
-            getDatabaseStatistics(null, null)
+            getDatabaseStatistics()
         }
         val stats = repository.getStatistics(null, null)
         assertThat(stats).isNotEmpty()
@@ -101,23 +100,23 @@ class MoodTrackerRepositoryImplTest {
         data.add(d2)
 
         Mockito.`when`(dao.periodStatistics(now.toEpochDay(), now.toEpochDay())).thenAnswer {
-            getDatabaseStatistics(now.toEpochDay(), now.toEpochDay())
+            getDatabaseStatistics()
         }
         val stats = repository.getStatistics(now.toEpochDay(), now.toEpochDay())
         assertThat(stats).isNotEmpty()
     }
 
-    private fun getDatabaseStatistics(begin: Long?, end: Long?): List<DatabaseStatistics> {
+    private fun getDatabaseStatistics(): List<DatabaseStatistics> {
         data.forEach { mood ->
             val stat = statistics.find { statistic -> mood.mood == statistic.mood }
             if (stat == null) {
-                val stat_ = DatabaseStatistics(mood.mood, 1, 100f)
-                statistics.add(stat_)
+                val newStat = DatabaseStatistics(mood.mood, 1, 100f)
+                statistics.add(newStat)
             } else {
                 val upStat = DatabaseStatistics(
                     mood = stat.mood,
                     quantity = stat.quantity!!.plus(1),
-                    percent = stat.percent!! / 2
+                    percent = stat.percent!! / 2,
                 )
                 statistics.remove(stat)
                 statistics.add(upStat)

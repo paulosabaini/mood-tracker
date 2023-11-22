@@ -57,6 +57,9 @@ class CalendarViewModel @Inject constructor(private val moodTrackerRepositoryImp
     }
 
     fun saveMood(mood: CharSequence) {
+        if (mood.isEmpty()) {
+            return
+        }
         viewModelScope.launch {
             val lastMood = moods.value?.lastOrNull()
             if (lastMood?.date == today.toEpochDay()) {
