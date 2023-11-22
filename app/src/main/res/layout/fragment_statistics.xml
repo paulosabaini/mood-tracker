@@ -8,6 +8,10 @@
         <variable
             name="viewModel"
             type="org.sabaini.moodtracker.presentation.screens.statistics.StatisticsViewModel" />
+
+        <variable
+            name="filterType"
+            type="org.sabaini.moodtracker.presentation.screens.statistics.StatisticFilterType" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -19,7 +23,7 @@
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="@{viewModel::filterClick}"
+            android:onClick="@{() -> viewModel.filterClick(filterType.WEEK)}"
             android:text="@string/week"
             android:textAllCaps="false"
             android:textColor="@color/gray"
@@ -34,7 +38,7 @@
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="@{viewModel::filterClick}"
+            android:onClick="@{() -> viewModel.filterClick(filterType.MONTH)}"
             android:text="@string/month"
             android:textAllCaps="false"
             android:textColor="@color/ink"
@@ -50,7 +54,7 @@
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="@{viewModel::filterClick}"
+            android:onClick="@{() -> viewModel.filterClick(filterType.YEAR)}"
             android:text="@string/year"
             android:textAllCaps="false"
             android:textColor="@color/gray"
@@ -65,7 +69,7 @@
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="@{viewModel::filterClick}"
+            android:onClick="@{() -> viewModel.filterClick(filterType.ALL)}"
             android:text="@string/all_the_time"
             android:textAllCaps="false"
             android:textColor="@color/gray"

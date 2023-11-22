@@ -7,7 +7,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.sabaini.moodtracker.MainCoroutineRule
-import org.sabaini.moodtracker.presentation.screens.statistics.StatisticsViewModel
 import org.sabaini.moodtracker.data.repository.FakeMoodTrackerRepository
 import java.time.LocalDate
 
@@ -34,7 +33,7 @@ class StatisticsViewModelTest {
         val now = LocalDate.now()
         repository.insertMood(now, "emoji")
         viewModel.updateStatistics(now.toEpochDay(), now.toEpochDay())
-        assertThat(viewModel.databaseStatistics.value).isNotEmpty()
+        assertThat(viewModel.statistics.value).isNotEmpty()
     }
 
     @Test
@@ -44,6 +43,6 @@ class StatisticsViewModelTest {
         repository.insertMood(yesterday, "emoji")
         repository.insertMood(now, "emoji2")
         viewModel.updateStatistics(yesterday.toEpochDay(), now.toEpochDay())
-        assertThat(viewModel.databaseStatistics.value!!.size).isEqualTo(2)
+        assertThat(viewModel.statistics.value!!.size).isEqualTo(2)
     }
 }
