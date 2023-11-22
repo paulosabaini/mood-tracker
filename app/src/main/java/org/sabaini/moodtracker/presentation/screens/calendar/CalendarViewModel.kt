@@ -27,59 +27,49 @@ import javax.inject.Inject
 class CalendarViewModel @Inject constructor(private val moodTrackerRepositoryImpl: MoodTrackerRepository) :
     ViewModel() {
 
-    private val _today = MutableLiveData<LocalDate>()
-    val today: LiveData<LocalDate>
-        get() = _today
+    private val today = LocalDate.now()
 
     private val _displayYear = MutableLiveData<Year>()
-    val displayYear: LiveData<Year>
-        get() = _displayYear
-
-    private val _emojisList = MutableLiveData<List<String>>()
-    val emojiList: LiveData<List<String>>
-        get() = _emojisList
+    val displayYear: LiveData<Year> = _displayYear
 
     private val _moods = MutableLiveData<List<Mood>>()
-    val moods: LiveData<List<Mood>>
-        get() = _moods
+    val moods: LiveData<List<Mood>> = _moods
+
+    companion object {
+        private const val YEAR_INCREMENT = 1L
+        private const val EMOJI_SIZE = 32f
+        private const val DAY_TEXT_SIZE = 16f
+        private const val ZERO = 0
+    }
 
     init {
         viewModelScope.launch {
             _moods.value = moodTrackerRepositoryImpl.getMoods()
         }
-        _today.value = LocalDate.now()
         _displayYear.value = Year.now()
-        _emojisList.value = EMOJIS
     }
 
     fun decrementDisplayYear() {
-        _displayYear.value = _displayYear.value!!.minusYears(1L)
+        _displayYear.value = _displayYear.value?.minusYears(YEAR_INCREMENT)
     }
 
     fun incrementDisplayYear() {
-        _displayYear.value = _displayYear.value!!.plusYears(1L)
+        _displayYear.value = _displayYear.value?.plusYears(YEAR_INCREMENT)
     }
 
     fun saveMood(mood: CharSequence) {
         viewModelScope.launch {
-            if (mood.isEmpty()) {
-                return@launch
-            }
-            if (moods.value!!.isEmpty()) {
-                moodTrackerRepositoryImpl.insertMood(_today.value!!, mood)
+            val lastMood = moods.value?.lastOrNull()
+            if (lastMood?.date == today.toEpochDay()) {
+                moodTrackerRepositoryImpl.updateMood(
+                    Mood(
+                        id = lastMood.id,
+                        date = lastMood.date,
+                        mood = mood as String,
+                    ),
+                )
             } else {
-                val lastMood = moods.value!!.lastOrNull()
-                if (lastMood!!.date != _today.value!!.toEpochDay()) {
-                    moodTrackerRepositoryImpl.insertMood(_today.value!!, mood)
-                } else {
-                    moodTrackerRepositoryImpl.updateMood(
-                        Mood(
-                            id = lastMood.id,
-                            date = lastMood.date,
-                            mood = mood as String,
-                        ),
-                    )
-                }
+                moodTrackerRepositoryImpl.insertMood(today, mood)
             }
             _moods.value = moodTrackerRepositoryImpl.getMoods()
         }
@@ -90,34 +80,34 @@ class CalendarViewModel @Inject constructor(private val moodTrackerRepositoryImp
             date.toEpochDay() == mood.date
         }
         return if (mood != null) {
-            Pair(mood.mood, 32f)
+            Pair(mood.mood, EMOJI_SIZE)
         } else {
-            Pair(date.dayOfMonth.toString(), 16f)
+            Pair(date.dayOfMonth.toString(), DAY_TEXT_SIZE)
         }
     }
 
     fun shouldDisplayEmojiPicker(data: CalendarDay) =
-        data.position == DayPosition.MonthDate && _today.value == data.date
+        data.position == DayPosition.MonthDate && today == data.date
 
     fun getMonthName(data: CalendarMonth) = data.yearMonth.month.name.uppercase(Locale.getDefault())
 
     fun isCurrentYear(year: Year) = year.value == YearMonth.now().year
 
-    fun isToday(data: CalendarDay) = data.date == _today.value
+    fun isToday(data: CalendarDay) = data.date == today
 
     fun isWeekend(data: CalendarDay) =
         data.date.dayOfWeek == DayOfWeek.SATURDAY || data.date.dayOfWeek == DayOfWeek.SUNDAY
 
     fun getFormattedEmojiList(): List<SpannableString> {
-        return _emojisList.value?.map {
+        return EMOJIS.map {
             val emoji = SpannableString(EmojiCompat.get().process(it))
             emoji.setSpan(
-                AbsoluteSizeSpan(32, true),
-                0,
+                AbsoluteSizeSpan(EMOJI_SIZE.toInt(), true),
+                ZERO,
                 emoji.length,
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE,
             )
             emoji
-        } ?: emptyList()
+        }
     }
 }
