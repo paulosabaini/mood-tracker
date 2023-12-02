@@ -6,11 +6,13 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.mockito.junit.MockitoJUnitRunner
 import org.sabaini.moodtracker.MainCoroutineRule
 import org.sabaini.moodtracker.data.repository.FakeMoodTrackerRepository
 import java.time.LocalDate
 
-
+@RunWith(MockitoJUnitRunner::class)
 class StatisticsViewModelTest {
 
     @get:Rule
@@ -28,21 +30,11 @@ class StatisticsViewModelTest {
         viewModel = StatisticsViewModel(repository)
     }
 
-    @Test
-    fun testUpdateStatistics() = runBlocking {
+    @Test()
+    fun shouldFilterTheStatistics() = runBlocking {
         val now = LocalDate.now()
         repository.insertMood(now, "emoji")
-        viewModel.updateStatistics(now.toEpochDay(), now.toEpochDay())
+        viewModel.filterClick(StatisticFilterType.MONTH)
         assertThat(viewModel.statistics.value).isNotEmpty()
-    }
-
-    @Test
-    fun testUpdateStatisticsTwoDays() = runBlocking {
-        val now = LocalDate.now()
-        val yesterday = now.minusDays(1)
-        repository.insertMood(yesterday, "emoji")
-        repository.insertMood(now, "emoji2")
-        viewModel.updateStatistics(yesterday.toEpochDay(), now.toEpochDay())
-        assertThat(viewModel.statistics.value!!.size).isEqualTo(2)
     }
 }

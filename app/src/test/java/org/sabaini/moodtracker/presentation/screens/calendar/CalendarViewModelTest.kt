@@ -2,15 +2,22 @@ package org.sabaini.moodtracker.presentation.screens.calendar
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
+import com.kizitonwose.calendar.core.CalendarDay
+import com.kizitonwose.calendar.core.CalendarMonth
+import com.kizitonwose.calendar.core.DayPosition
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.mockito.junit.MockitoJUnitRunner
 import org.sabaini.moodtracker.MainCoroutineRule
-import org.sabaini.moodtracker.presentation.screens.calendar.CalendarViewModel
 import org.sabaini.moodtracker.data.repository.FakeMoodTrackerRepository
 import java.time.LocalDate
+import java.time.Year
+import java.time.YearMonth
 
+@RunWith(MockitoJUnitRunner::class)
 class CalendarViewModelTest {
 
     @get:Rule
@@ -74,9 +81,109 @@ class CalendarViewModelTest {
     }
 
     @Test
-    fun testFilterMoods() {
+    fun shouldReturnEmojiIfMoodExists() {
         val mood = "emoji"
         viewModel.saveMood(mood)
-        assertThat(viewModel.filterMoods()).isNotEmpty()
+        assertThat(viewModel.getDayText(LocalDate.now()).first).isEqualTo(mood)
+    }
+
+    @Test
+    fun shouldReturnDayIfMoodNotExists() {
+        val date = LocalDate.now()
+        assertThat(viewModel.getDayText(date).first).isEqualTo(date.dayOfMonth.toString())
+    }
+
+    @Test
+    fun shouldDisplayEmojiPicker() {
+        assertThat(
+            viewModel.shouldDisplayEmojiPicker(
+                CalendarDay(
+                    date = LocalDate.now(),
+                    position = DayPosition.MonthDate,
+                ),
+            ),
+        ).isTrue()
+    }
+
+    @Test
+    fun shouldNotDisplayEmojiPicker() {
+        assertThat(
+            viewModel.shouldDisplayEmojiPicker(
+                CalendarDay(
+                    date = LocalDate.now().minusDays(1L),
+                    position = DayPosition.MonthDate,
+                ),
+            ),
+        ).isFalse()
+    }
+
+    @Test
+    fun shouldGetTheCorrectMonthName() {
+        assertThat(
+            viewModel.getMonthName(
+                CalendarMonth(
+                    yearMonth = YearMonth.of(2023, 11),
+                    weekDays = emptyList(),
+                ),
+            ),
+        ).isEqualTo("NOVEMBER")
+    }
+
+    @Test
+    fun shouldReturnTrueIfItsTheCurrentYear() {
+        assertThat(viewModel.isCurrentYear(Year.now())).isTrue()
+    }
+
+    @Test
+    fun shouldReturnFalseIfItsNotTheCurrentYear() {
+        assertThat(viewModel.isCurrentYear(Year.now().minusYears(1L))).isFalse()
+    }
+
+    @Test
+    fun shouldReturnTrueIfItsToday() {
+        assertThat(
+            viewModel.isToday(
+                CalendarDay(
+                    date = LocalDate.now(),
+                    position = DayPosition.MonthDate,
+                ),
+            ),
+        ).isTrue()
+    }
+
+    @Test
+    fun shouldReturnFalseIfItsNotToday() {
+        assertThat(
+            viewModel.isToday(
+                CalendarDay(
+                    date = LocalDate.now().minusDays(1L),
+                    position = DayPosition.MonthDate,
+                ),
+            ),
+        ).isFalse()
+    }
+
+    @Test
+    fun shouldReturnTrueIfItsWeekend() {
+        assertThat(
+            viewModel.isWeekend(
+                CalendarDay(
+                    date = LocalDate.of(2023, 1, 1),
+                    position = DayPosition.MonthDate,
+                ),
+            ),
+        ).isTrue()
+    }
+
+    @Test
+    fun shouldReturnFalseIfItsNotWeekend() {
+        assertThat(
+            viewModel.isWeekend(
+                CalendarDay(
+                    date = LocalDate.of(2023, 1, 2),
+                    position = DayPosition.MonthDate,
+                ),
+            ),
+        ).isFalse()
     }
 }
