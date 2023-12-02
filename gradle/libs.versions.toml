@@ -1,6 +1,6 @@
 [versions]
 # plugins
-android-gradle                      = "8.1.4"
+android-gradle                      = "8.2.0"
 ksp                                 = "1.9.0-1.0.12"
 
 # production libraries
@@ -15,7 +15,7 @@ hilt                                = "2.47"
 kotlin                              = "1.9.0"
 kotlin-coroutines                   = "1.7.3"
 lifecycle                           = "2.6.2"
-room                                = "2.6.0"
+room                                = "2.6.1"
 timber                              = "5.0.1"
 calendar-view                       = "2.3.0"
 navigation                          = "2.7.5"
