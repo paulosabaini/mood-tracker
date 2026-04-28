@@ -5,7 +5,6 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -78,7 +77,7 @@ class CalendarFragment : Fragment() {
 
                     container.onClick = {
                         if (viewModel.shouldDisplayEmojiPicker(data)) {
-                            showMenu(textView)
+                            showEmojiPicker()
                         }
                     }
 
@@ -133,15 +132,10 @@ class CalendarFragment : Fragment() {
         }
     }
 
-    private fun showMenu(textView: TextView) {
-        val popup = PopupMenu(context, textView)
-        viewModel.getFormattedEmojiList().forEach {
-            popup.menu.add(it)
+    private fun showEmojiPicker() {
+        val emojiPicker = EmojiPickerBottomSheet(viewModel.getFormattedEmojiList()) { mood ->
+            viewModel.saveMood(mood)
         }
-        popup.setOnMenuItemClickListener { menuItem ->
-            viewModel.saveMood(menuItem.title.toString())
-            true
-        }
-        popup.show()
+        emojiPicker.show(childFragmentManager, EmojiPickerBottomSheet.TAG)
     }
 }

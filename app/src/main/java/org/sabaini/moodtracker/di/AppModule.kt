@@ -12,6 +12,9 @@ import org.sabaini.moodtracker.data.local.dao.MoodDao
 import org.sabaini.moodtracker.data.local.db.MoodTrackerDatabase
 import org.sabaini.moodtracker.data.repository.MoodTrackerRepositoryImpl
 import org.sabaini.moodtracker.domain.repository.MoodTrackerRepository
+import org.sabaini.moodtracker.domain.usecase.GetMoodsUseCase
+import org.sabaini.moodtracker.domain.usecase.GetStatisticsUseCase
+import org.sabaini.moodtracker.domain.usecase.SaveMoodUseCase
 import javax.inject.Singleton
 
 private const val MOOD_TRACKER_DATABASE_NAME = "mood_tracker_db"
@@ -47,5 +50,23 @@ object AppModule {
     @Singleton
     fun provideBundledEmojiCompatConfig(@ApplicationContext context: Context): BundledEmojiCompatConfig {
         return BundledEmojiCompatConfig(context)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetMoodsUseCase(repository: MoodTrackerRepository): GetMoodsUseCase {
+        return GetMoodsUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSaveMoodUseCase(repository: MoodTrackerRepository): SaveMoodUseCase {
+        return SaveMoodUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetStatisticsUseCase(repository: MoodTrackerRepository): GetStatisticsUseCase {
+        return GetStatisticsUseCase(repository)
     }
 }

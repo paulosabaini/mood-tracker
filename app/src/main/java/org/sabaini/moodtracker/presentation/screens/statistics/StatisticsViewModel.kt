@@ -7,17 +7,13 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import org.sabaini.moodtracker.domain.model.Statistics
-import org.sabaini.moodtracker.domain.repository.MoodTrackerRepository
-import java.time.DayOfWeek
-import java.time.LocalDate
-import java.time.temporal.TemporalAdjusters
-import java.time.temporal.WeekFields
-import java.util.Locale
+import org.sabaini.moodtracker.domain.usecase.GetStatisticsUseCase
 import javax.inject.Inject
 
 @HiltViewModel
-class StatisticsViewModel @Inject constructor(private val moodTrackerRepositoryImpl: MoodTrackerRepository) :
-    ViewModel() {
+class StatisticsViewModel @Inject constructor(
+    private val getStatisticsUseCase: GetStatisticsUseCase
+) : ViewModel() {
 
     private val _statistics = MutableLiveData<List<Statistics>>()
     val statistics: LiveData<List<Statistics>> = _statistics
@@ -25,16 +21,9 @@ class StatisticsViewModel @Inject constructor(private val moodTrackerRepositoryI
     private val _filter = MutableLiveData<StatisticFilterType>()
     val filter: LiveData<StatisticFilterType> = _filter
 
-    companion object {
-        private const val FIRST_DAY = 1
-    }
-
     init {
         viewModelScope.launch {
-            _statistics.value = moodTrackerRepositoryImpl.getStatistics(
-                LocalDate.now().withDayOfMonth(FIRST_DAY).toEpochDay(),
-                LocalDate.now().toEpochDay(),
-            )
+            _statistics.value = getStatisticsUseCase(null)
         }
     }
 
@@ -44,46 +33,8 @@ class StatisticsViewModel @Inject constructor(private val moodTrackerRepositoryI
     }
 
     private fun filterStatistics() {
-        val now = LocalDate.now()
-        when (_filter.value) {
-            StatisticFilterType.WEEK -> {
-                val firstDayOfWeek = WeekFields.of(Locale.getDefault()).firstDayOfWeek
-                val lastDayOfWeek =
-                    DayOfWeek.of(((firstDayOfWeek.value + 5) % DayOfWeek.values().size) + 1)
-
-                updateStatistics(
-                    now.with(TemporalAdjusters.previousOrSame(firstDayOfWeek)).toEpochDay(),
-                    now.with(TemporalAdjusters.nextOrSame(lastDayOfWeek)).toEpochDay(),
-                )
-            }
-
-            StatisticFilterType.MONTH -> {
-                updateStatistics(
-                    now.withDayOfMonth(FIRST_DAY).toEpochDay(),
-                    now.withDayOfMonth(now.lengthOfMonth()).toEpochDay(),
-                )
-            }
-
-            StatisticFilterType.YEAR -> {
-                updateStatistics(
-                    now.withDayOfYear(FIRST_DAY).toEpochDay(),
-                    now.withDayOfYear(now.lengthOfYear()).toEpochDay(),
-                )
-            }
-
-            StatisticFilterType.ALL -> {
-                updateStatistics(null, null)
-            }
-
-            else -> {
-                updateStatistics(null, null)
-            }
-        }
-    }
-
-    private fun updateStatistics(begin: Long?, end: Long?) {
         viewModelScope.launch {
-            _statistics.value = moodTrackerRepositoryImpl.getStatistics(begin, end)
+            _statistics.value = getStatisticsUseCase(_filter.value)
         }
     }
 }

@@ -10,6 +10,7 @@ import org.junit.runner.RunWith
 import org.mockito.junit.MockitoJUnitRunner
 import org.sabaini.moodtracker.MainCoroutineRule
 import org.sabaini.moodtracker.data.repository.FakeMoodTrackerRepository
+import org.sabaini.moodtracker.domain.usecase.GetStatisticsUseCase
 import java.time.LocalDate
 
 @RunWith(MockitoJUnitRunner::class)
@@ -23,11 +24,13 @@ class StatisticsViewModelTest {
 
     private lateinit var viewModel: StatisticsViewModel
     private lateinit var repository: FakeMoodTrackerRepository
+    private lateinit var getStatisticsUseCase: GetStatisticsUseCase
 
     @Before
     fun setup() {
         repository = FakeMoodTrackerRepository()
-        viewModel = StatisticsViewModel(repository)
+        getStatisticsUseCase = GetStatisticsUseCase(repository)
+        viewModel = StatisticsViewModel(getStatisticsUseCase)
     }
 
     @Test()

@@ -13,6 +13,8 @@ import org.junit.runner.RunWith
 import org.mockito.junit.MockitoJUnitRunner
 import org.sabaini.moodtracker.MainCoroutineRule
 import org.sabaini.moodtracker.data.repository.FakeMoodTrackerRepository
+import org.sabaini.moodtracker.domain.usecase.GetMoodsUseCase
+import org.sabaini.moodtracker.domain.usecase.SaveMoodUseCase
 import java.time.LocalDate
 import java.time.Year
 import java.time.YearMonth
@@ -28,11 +30,15 @@ class CalendarViewModelTest {
 
     private lateinit var viewModel: CalendarViewModel
     private lateinit var repository: FakeMoodTrackerRepository
+    private lateinit var getMoodsUseCase: GetMoodsUseCase
+    private lateinit var saveMoodUseCase: SaveMoodUseCase
 
     @Before
     fun setup() {
         repository = FakeMoodTrackerRepository()
-        viewModel = CalendarViewModel(repository)
+        getMoodsUseCase = GetMoodsUseCase(repository)
+        saveMoodUseCase = SaveMoodUseCase(repository)
+        viewModel = CalendarViewModel(getMoodsUseCase, saveMoodUseCase)
     }
 
     @Test

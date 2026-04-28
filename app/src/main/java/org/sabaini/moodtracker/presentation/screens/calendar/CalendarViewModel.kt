@@ -14,7 +14,8 @@ import com.kizitonwose.calendar.core.DayPosition
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import org.sabaini.moodtracker.domain.model.Mood
-import org.sabaini.moodtracker.domain.repository.MoodTrackerRepository
+import org.sabaini.moodtracker.domain.usecase.GetMoodsUseCase
+import org.sabaini.moodtracker.domain.usecase.SaveMoodUseCase
 import org.sabaini.moodtracker.presentation.screens.calendar.Emojis.EMOJIS
 import java.time.DayOfWeek
 import java.time.LocalDate
@@ -24,8 +25,10 @@ import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
-class CalendarViewModel @Inject constructor(private val moodTrackerRepositoryImpl: MoodTrackerRepository) :
-    ViewModel() {
+class CalendarViewModel @Inject constructor(
+    private val getMoodsUseCase: GetMoodsUseCase,
+    private val saveMoodUseCase: SaveMoodUseCase
+) : ViewModel() {
 
     private val today = LocalDate.now()
 
@@ -44,7 +47,7 @@ class CalendarViewModel @Inject constructor(private val moodTrackerRepositoryImp
 
     init {
         viewModelScope.launch {
-            _moods.value = moodTrackerRepositoryImpl.getMoods()
+            _moods.value = getMoodsUseCase()
         }
     }
 
@@ -57,23 +60,9 @@ class CalendarViewModel @Inject constructor(private val moodTrackerRepositoryImp
     }
 
     fun saveMood(mood: CharSequence) {
-        if (mood.isEmpty()) {
-            return
-        }
         viewModelScope.launch {
-            val lastMood = moods.value?.lastOrNull()
-            if (lastMood?.date == today.toEpochDay()) {
-                moodTrackerRepositoryImpl.updateMood(
-                    Mood(
-                        id = lastMood.id,
-                        date = lastMood.date,
-                        mood = mood as String,
-                    ),
-                )
-            } else {
-                moodTrackerRepositoryImpl.insertMood(today, mood)
-            }
-            _moods.value = moodTrackerRepositoryImpl.getMoods()
+            saveMoodUseCase(today, moods.value, mood)
+            _moods.value = getMoodsUseCase()
         }
     }
 

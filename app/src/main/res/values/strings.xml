@@ -12,5 +12,6 @@
     <string name="fri">Fri</string>
     <string name="sat">Sat</string>
     <string name="settings_screen">Settings Screen</string>
+    <string name="how_are_you_feeling_today">How are you feeling today?</string>
     <string name="statistic_value">%d (%d%%)</string>
 </resources>
