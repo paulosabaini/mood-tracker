@@ -3,7 +3,7 @@ package org.sabaini.moodtracker.presentation.screens.calendar
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.AbsoluteSizeSpan
-import androidx.emoji.text.EmojiCompat
+import androidx.emoji2.text.EmojiCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

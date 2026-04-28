@@ -1,7 +1,7 @@
 package org.sabaini.moodtracker.di
 
 import android.content.Context
-import androidx.emoji.bundled.BundledEmojiCompatConfig
+import androidx.emoji2.bundled.BundledEmojiCompatConfig
 import androidx.room.Room
 import dagger.Module
 import dagger.Provides

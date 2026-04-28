@@ -31,7 +31,3 @@ You can
 ## Design
 
 The app design is based on the [mood tracking UX case study](https://uxdesign.cc/ux-case-study-1d741a0d5eee) by Mac Kozal
-
-## Developed By
-
-Paulo Sabaini
