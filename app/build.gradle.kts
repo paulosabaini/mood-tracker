@@ -60,6 +60,7 @@ dependencies {
     implementation(libs.room)
     implementation(libs.room.ktx)
     implementation(libs.splashscreen)
+    implementation(libs.datastore)
 
     testImplementation(libs.bundles.common.test)
     androidTestImplementation(libs.bundles.common.android.test)

@@ -21,6 +21,7 @@ calendar-view                       = "2.10.1"
 navigation                          = "2.9.8"
 emoji                               = "1.6.0"
 splashscreen                        = "1.2.0"
+datastore                           = "1.1.2"
 
 # test libraries
 test-junit                          = "4.13.2"
@@ -65,6 +66,7 @@ room-compiler                       = { module = "androidx.room:room-compiler", 
 room-ktx                            = { module = "androidx.room:room-ktx", version.ref = "room" }
 timber                              = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 splashscreen                        = { module = "androidx.core:core-splashscreen", version.ref = "splashscreen" }
+datastore                           = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
 
 # test libraries
 test-core                           = { module = "androidx.test:core", version.ref = "test-core" }

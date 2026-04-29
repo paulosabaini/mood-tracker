@@ -46,6 +46,10 @@ class CalendarViewModel @Inject constructor(
     }
 
     init {
+        refreshMoods()
+    }
+
+    fun refreshMoods() {
         viewModelScope.launch {
             _moods.value = getMoodsUseCase()
         }

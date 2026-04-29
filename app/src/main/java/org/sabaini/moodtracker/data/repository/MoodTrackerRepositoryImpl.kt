@@ -67,4 +67,14 @@ class MoodTrackerRepositoryImpl @Inject constructor(private val moodDao: MoodDao
         }
         return statistics?.toStatisticsDomainModel()
     }
+
+    override suspend fun clearAllData() {
+        withContext(Dispatchers.IO) {
+            try {
+                moodDao.deleteAllMoods()
+            } catch (e: Exception) {
+                Log.d("Exception", e.toString())
+            }
+        }
+    }
 }

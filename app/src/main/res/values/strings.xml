@@ -11,7 +11,15 @@
     <string name="thu">Thu</string>
     <string name="fri">Fri</string>
     <string name="sat">Sat</string>
-    <string name="settings_screen">Settings Screen</string>
+    <string name="settings_screen">Settings</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="clear_all_data">Clear All Data</string>
+    <string name="clear_data_confirmation_title">Clear All Data?</string>
+    <string name="clear_data_confirmation_message">This action will delete all your mood entries. This cannot be undone.</string>
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
+    <string name="app_info">App Information</string>
+    <string name="version">Version: %s</string>
     <string name="how_are_you_feeling_today">How are you feeling today?</string>
     <string name="statistic_value">%d (%d%%)</string>
 </resources>

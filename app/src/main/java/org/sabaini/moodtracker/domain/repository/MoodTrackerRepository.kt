@@ -9,4 +9,5 @@ interface MoodTrackerRepository {
     suspend fun insertMood(date: LocalDate, mood: CharSequence)
     suspend fun updateMood(mood: Mood)
     suspend fun getStatistics(begin: Long?, end: Long?): List<Statistics>?
+    suspend fun clearAllData()
 }

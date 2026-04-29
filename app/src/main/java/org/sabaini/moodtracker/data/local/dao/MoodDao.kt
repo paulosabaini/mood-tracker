@@ -22,4 +22,7 @@ interface MoodDao {
 
     @Query("select mood, count(mood) as quantity, count(mood) * 100.0 / (select count(*) from mood ) as percent from mood group by mood order by count(mood) desc")
     fun allTimeStatistics(): List<DatabaseStatistics>
+
+    @Query("DELETE FROM mood")
+    fun deleteAllMoods()
 }

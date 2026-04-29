@@ -44,4 +44,9 @@ class FakeMoodTrackerRepository() : MoodTrackerRepository {
         }
         return statistics
     }
+
+    override suspend fun clearAllData() {
+        moods.clear()
+        statistics.clear()
+    }
 }

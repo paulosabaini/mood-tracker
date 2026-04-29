@@ -96,6 +96,11 @@ class CalendarFragment : Fragment() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.refreshMoods()
+    }
+
     private fun onDisplayYear(year: Year) {
         binding.calendarView.setup(
             startMonth = YearMonth.of(year.value, START_MONTH),

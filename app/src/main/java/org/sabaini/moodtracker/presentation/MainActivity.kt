@@ -2,6 +2,7 @@ package org.sabaini.moodtracker.presentation
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.emoji2.bundled.BundledEmojiCompatConfig
 import androidx.emoji2.text.EmojiCompat
@@ -9,7 +10,10 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 import org.sabaini.moodtracker.R
+import org.sabaini.moodtracker.data.local.prefs.PreferenceManager
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -18,10 +22,14 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var emojiConfig: BundledEmojiCompatConfig
 
+    @Inject
+    lateinit var preferenceManager: PreferenceManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(R.style.Theme_MoodTracker)
-        super.onCreate(savedInstanceState)
         installSplashScreen()
+        super.onCreate(savedInstanceState)
+        applyTheme()
+        setTheme(R.style.Theme_MoodTracker)
         setContentView(R.layout.activity_main)
 
         setupViews()
@@ -39,5 +47,17 @@ class MainActivity : AppCompatActivity() {
 
         // Configure EmojiCompat
         EmojiCompat.init(emojiConfig)
+    }
+
+    private fun applyTheme() {
+        val isDarkModeEnabled = runBlocking {
+            preferenceManager.isDarkModeEnabled.first()
+        }
+        val mode = if (isDarkModeEnabled) {
+            AppCompatDelegate.MODE_NIGHT_YES
+        } else {
+            AppCompatDelegate.MODE_NIGHT_NO
+        }
+        AppCompatDelegate.setDefaultNightMode(mode)
     }
 }

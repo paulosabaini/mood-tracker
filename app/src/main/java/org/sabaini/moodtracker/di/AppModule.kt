@@ -10,6 +10,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import org.sabaini.moodtracker.data.local.dao.MoodDao
 import org.sabaini.moodtracker.data.local.db.MoodTrackerDatabase
+import org.sabaini.moodtracker.data.local.prefs.PreferenceManager
 import org.sabaini.moodtracker.data.repository.MoodTrackerRepositoryImpl
 import org.sabaini.moodtracker.domain.repository.MoodTrackerRepository
 import org.sabaini.moodtracker.domain.usecase.GetMoodsUseCase
@@ -31,7 +32,7 @@ object AppModule {
             MoodTrackerDatabase::class.java,
             MOOD_TRACKER_DATABASE_NAME,
         )
-            .fallbackToDestructiveMigration()
+            .fallbackToDestructiveMigration(false)
             .build()
     }
 
@@ -68,5 +69,11 @@ object AppModule {
     @Singleton
     fun provideGetStatisticsUseCase(repository: MoodTrackerRepository): GetStatisticsUseCase {
         return GetStatisticsUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun providePreferenceManager(@ApplicationContext context: Context): PreferenceManager {
+        return PreferenceManager(context)
     }
 }
