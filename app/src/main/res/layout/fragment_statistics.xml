@@ -16,68 +16,64 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:padding="16dp">
 
-        <Button
-            android:id="@+id/week_stats"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/filterGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="@{() -> viewModel.filterClick(filterType.WEEK)}"
-            android:text="@string/week"
-            android:textAllCaps="false"
-            android:textColor="@color/gray"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toStartOf="@+id/month_stats"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/month_stats"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="@{() -> viewModel.filterClick(filterType.MONTH)}"
-            android:text="@string/month"
-            android:textAllCaps="false"
-            android:textColor="@color/ink"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/year_stats"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/week_stats"
-            app:layout_constraintTop_toTopOf="@+id/week_stats" />
-
-        <Button
-            android:id="@+id/year_stats"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="@{() -> viewModel.filterClick(filterType.YEAR)}"
-            android:text="@string/year"
-            android:textAllCaps="false"
-            android:textColor="@color/gray"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toStartOf="@+id/all_stats"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/month_stats"
-            app:layout_constraintTop_toTopOf="@+id/month_stats" />
-
-        <Button
-            android:id="@+id/all_stats"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="@{() -> viewModel.filterClick(filterType.ALL)}"
-            android:text="@string/all_the_time"
-            android:textAllCaps="false"
-            android:textColor="@color/gray"
-            android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/year_stats"
-            app:layout_constraintTop_toTopOf="@+id/year_stats" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:selectionRequired="true"
+            app:singleSelection="true">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/week_stats"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/week"
+                android:textAllCaps="false"
+                android:textColor="@color/filter_button_text_color"
+                app:backgroundTint="@color/filter_button_background_tint"
+                app:strokeColor="@color/filter_button_stroke_color" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/month_stats"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/month"
+                android:textAllCaps="false"
+                android:textColor="@color/filter_button_text_color"
+                app:backgroundTint="@color/filter_button_background_tint"
+                app:strokeColor="@color/filter_button_stroke_color" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/year_stats"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/year"
+                android:textAllCaps="false"
+                android:textColor="@color/filter_button_text_color"
+                app:backgroundTint="@color/filter_button_background_tint"
+                app:strokeColor="@color/filter_button_stroke_color" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/all_stats"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/all_the_time"
+                android:textAllCaps="false"
+                android:textColor="@color/filter_button_text_color"
+                app:backgroundTint="@color/filter_button_background_tint"
+                app:strokeColor="@color/filter_button_stroke_color" />
+
+        </com.google.android.material.button.MaterialButtonToggleGroup>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/moods_stats"
@@ -87,7 +83,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/week_stats"
+            app:layout_constraintTop_toBottomOf="@+id/filterGroup"
             tools:listitem="@layout/statistic_item" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -37,6 +37,7 @@ class StatisticsViewModelTest {
     fun shouldFilterTheStatistics() = runBlocking {
         val now = LocalDate.now()
         repository.insertMood(now, "emoji")
+        viewModel.statistics.observeForever { }
         viewModel.filterClick(StatisticFilterType.MONTH)
         assertThat(viewModel.statistics.value).isNotEmpty()
     }

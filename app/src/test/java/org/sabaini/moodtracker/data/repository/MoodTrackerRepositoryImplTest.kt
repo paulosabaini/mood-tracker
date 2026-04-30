@@ -2,6 +2,8 @@ package org.sabaini.moodtracker.data.repository
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Rule
@@ -60,8 +62,8 @@ class MoodTrackerRepositoryImplTest {
         val d2 = MoodEntity(2, now.toEpochDay(), "emoji2")
         data.add(d1)
         data.add(d2)
-        Mockito.`when`(dao.getAllMoods()).thenAnswer { data }
-        assertThat(repository.getMoods()?.size).isEqualTo(data.size)
+        Mockito.`when`(dao.getAllMoods()).thenAnswer { flowOf(data) }
+        assertThat(repository.getMoods().first()?.size).isEqualTo(data.size)
     }
 
     @Test
@@ -85,9 +87,9 @@ class MoodTrackerRepositoryImplTest {
         data.add(d2)
 
         Mockito.`when`(dao.allTimeStatistics()).thenAnswer {
-            getDatabaseStatistics()
+            flowOf(getDatabaseStatistics())
         }
-        val stats = repository.getStatistics(null, null)
+        val stats = repository.getStatistics(null, null).first()
         assertThat(stats).isNotEmpty()
     }
 
@@ -100,9 +102,9 @@ class MoodTrackerRepositoryImplTest {
         data.add(d2)
 
         Mockito.`when`(dao.periodStatistics(now.toEpochDay(), now.toEpochDay())).thenAnswer {
-            getDatabaseStatistics()
+            flowOf(getDatabaseStatistics())
         }
-        val stats = repository.getStatistics(now.toEpochDay(), now.toEpochDay())
+        val stats = repository.getStatistics(now.toEpochDay(), now.toEpochDay()).first()
         assertThat(stats).isNotEmpty()
     }
 

@@ -11,6 +11,7 @@
     <color name="ink">#114CAB</color>
     <color name="gray">#A9ADB2</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="day_bg">@color/white</color>
     <color name="rose">#FFEBF1</color>
     <color name="red">#FF547F</color>
     <color name="orange">#FF5722</color>

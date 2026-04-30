@@ -1,5 +1,6 @@
 package org.sabaini.moodtracker.domain.usecase
 
+import kotlinx.coroutines.flow.Flow
 import org.sabaini.moodtracker.domain.model.Statistics
 import org.sabaini.moodtracker.domain.repository.MoodTrackerRepository
 import org.sabaini.moodtracker.presentation.screens.statistics.StatisticFilterType
@@ -17,7 +18,7 @@ class GetStatisticsUseCase @Inject constructor(
         private const val FIRST_DAY = 1
     }
 
-    suspend operator fun invoke(filter: StatisticFilterType?): List<Statistics>? {
+    operator fun invoke(filter: StatisticFilterType?): Flow<List<Statistics>?> {
         val now = LocalDate.now()
         val (begin, end) = when (filter) {
             StatisticFilterType.WEEK -> {

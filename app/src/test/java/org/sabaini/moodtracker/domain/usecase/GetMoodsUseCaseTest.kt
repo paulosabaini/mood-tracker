@@ -1,6 +1,7 @@
 package org.sabaini.moodtracker.domain.usecase
 
 import com.google.common.truth.Truth.assertThat
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
@@ -21,7 +22,7 @@ class GetMoodsUseCaseTest {
     @Test
     fun `invoke should return moods from repository`() = runBlocking {
         repository.insertMood(LocalDate.now(), "😊")
-        val moods = getMoodsUseCase()
+        val moods = getMoodsUseCase().first()
         assertThat(moods).isNotEmpty()
         assertThat(moods!![0].mood).isEqualTo("😊")
     }

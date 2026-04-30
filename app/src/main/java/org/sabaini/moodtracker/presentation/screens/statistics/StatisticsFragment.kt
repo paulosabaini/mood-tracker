@@ -33,10 +33,27 @@ class StatisticsFragment : Fragment() {
         binding.moodsStats.adapter = adapter
         binding.moodsStats.layoutManager = LinearLayoutManager(requireContext())
 
+        setupFilterListener()
+
         viewModel.statistics.observe(viewLifecycleOwner, ::onStatistics)
         viewModel.filter.observe(viewLifecycleOwner, ::onFilter)
 
         return binding.root
+    }
+
+    private fun setupFilterListener() {
+        binding.filterGroup.addOnButtonCheckedListener { _, checkedId, isChecked ->
+            if (isChecked) {
+                val type = when (checkedId) {
+                    binding.weekStats.id -> StatisticFilterType.WEEK
+                    binding.monthStats.id -> StatisticFilterType.MONTH
+                    binding.yearStats.id -> StatisticFilterType.YEAR
+                    binding.allStats.id -> StatisticFilterType.ALL
+                    else -> StatisticFilterType.ALL
+                }
+                viewModel.filterClick(type)
+            }
+        }
     }
 
     private fun onStatistics(statistics: List<Statistics>) {
@@ -44,19 +61,14 @@ class StatisticsFragment : Fragment() {
     }
 
     private fun onFilter(type: StatisticFilterType) {
-        val selectedColor = ContextCompat.getColor(requireContext(), ink)
-        val unselectedColor = ContextCompat.getColor(requireContext(), gray)
-
-        val buttons = mapOf(
-            binding.allStats to StatisticFilterType.ALL,
-            binding.monthStats to StatisticFilterType.MONTH,
-            binding.weekStats to StatisticFilterType.WEEK,
-            binding.yearStats to StatisticFilterType.YEAR,
-        )
-
-        for ((button, filterType) in buttons) {
-            button.setTextColor(if (type == filterType) selectedColor else unselectedColor)
-            button.typeface = if (type == filterType) Typeface.DEFAULT_BOLD else Typeface.DEFAULT
+        val checkedId = when (type) {
+            StatisticFilterType.WEEK -> binding.weekStats.id
+            StatisticFilterType.MONTH -> binding.monthStats.id
+            StatisticFilterType.YEAR -> binding.yearStats.id
+            StatisticFilterType.ALL -> binding.allStats.id
+        }
+        if (binding.filterGroup.checkedButtonId != checkedId) {
+            binding.filterGroup.check(checkedId)
         }
     }
 }

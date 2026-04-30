@@ -59,6 +59,7 @@ class CalendarViewModelTest {
     fun testSaveMood() {
         val mood = "emoji"
         viewModel.saveMood(mood)
+        viewModel.moods.observeForever { }
         assertThat(viewModel.moods.value!![0].mood).isEqualTo(mood)
     }
 
@@ -67,6 +68,7 @@ class CalendarViewModelTest {
         repository.insertMood(LocalDate.now().minusDays(1), "emoji1")
         val mood = "emoji2"
         viewModel.saveMood(mood)
+        viewModel.moods.observeForever { }
         assertThat(viewModel.moods.value!![1].mood).isEqualTo(mood)
     }
 
@@ -74,13 +76,15 @@ class CalendarViewModelTest {
     fun testSaveEmptyMood() {
         val mood = ""
         viewModel.saveMood(mood)
+        viewModel.moods.observeForever { }
         assertThat(viewModel.moods.value!!).isEmpty()
     }
 
     @Test
-    fun testSaveUpdatedMood() {
+    fun testSaveUpdatedMood() = runBlocking {
         val mood = "emoji"
         val mood2 = mood + "2"
+        viewModel.moods.observeForever { }
         viewModel.saveMood(mood)
         viewModel.saveMood(mood2)
         assertThat(viewModel.moods.value!![0].mood).isEqualTo(mood2)
@@ -90,6 +94,7 @@ class CalendarViewModelTest {
     fun shouldReturnEmojiIfMoodExists() {
         val mood = "emoji"
         viewModel.saveMood(mood)
+        viewModel.moods.observeForever { }
         assertThat(viewModel.getDayText(LocalDate.now()).first).isEqualTo(mood)
     }
 

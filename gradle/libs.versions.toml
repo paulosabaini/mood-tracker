@@ -15,6 +15,7 @@ hilt                                = "2.59.2"
 kotlin                              = "2.3.21"
 kotlin-coroutines                   = "1.10.2"
 lifecycle                           = "2.10.0"
+lifecycle-livedata                 = "2.10.0"
 room                                = "2.8.4"
 timber                              = "5.0.1"
 calendar-view                       = "2.10.1"
@@ -55,6 +56,7 @@ legacy-support                      = { module = "androidx.legacy:legacy-support
 navigation-fragment                 = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation" }
 navigation-ui                       = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation" }
 lifecycle-viewmodel                 = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
+lifecycle-livedata                  = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycle-livedata" }
 desugar                             = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar" }
 calendarview                        = { module =  "com.kizitonwose.calendar:view", version.ref = "calendar-view" }
 emoji                               = { module = "androidx.emoji2:emoji2-bundled", version.ref = "emoji" }

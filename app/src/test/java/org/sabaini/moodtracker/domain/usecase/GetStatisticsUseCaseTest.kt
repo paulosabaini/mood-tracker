@@ -1,6 +1,7 @@
 package org.sabaini.moodtracker.domain.usecase
 
 import com.google.common.truth.Truth.assertThat
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
@@ -22,14 +23,14 @@ class GetStatisticsUseCaseTest {
     @Test
     fun `invoke with month filter should return statistics`() = runBlocking {
         repository.insertMood(LocalDate.now(), "😊")
-        val stats = getStatisticsUseCase(StatisticFilterType.MONTH)
+        val stats = getStatisticsUseCase(StatisticFilterType.MONTH).first()
         assertThat(stats).isNotEmpty()
     }
     
     @Test
     fun `invoke with null filter should return default statistics`() = runBlocking {
         repository.insertMood(LocalDate.now(), "😊")
-        val stats = getStatisticsUseCase(null)
+        val stats = getStatisticsUseCase(null).first()
         assertThat(stats).isNotEmpty()
     }
 }

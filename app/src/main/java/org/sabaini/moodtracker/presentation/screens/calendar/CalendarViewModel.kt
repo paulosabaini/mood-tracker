@@ -7,6 +7,7 @@ import androidx.emoji2.text.EmojiCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.kizitonwose.calendar.core.CalendarDay
 import com.kizitonwose.calendar.core.CalendarMonth
@@ -35,24 +36,13 @@ class CalendarViewModel @Inject constructor(
     private val _displayYear = MutableLiveData(Year.now())
     val displayYear: LiveData<Year> = _displayYear
 
-    private val _moods = MutableLiveData<List<Mood>>()
-    val moods: LiveData<List<Mood>> = _moods
+    val moods: LiveData<List<Mood>> = getMoodsUseCase().asLiveData() as LiveData<List<Mood>>
 
     companion object {
         private const val YEAR_INCREMENT = 1L
         private const val EMOJI_SIZE = 32f
         private const val DAY_TEXT_SIZE = 16f
         private const val ZERO = 0
-    }
-
-    init {
-        refreshMoods()
-    }
-
-    fun refreshMoods() {
-        viewModelScope.launch {
-            _moods.value = getMoodsUseCase()
-        }
     }
 
     fun decrementDisplayYear() {
@@ -66,7 +56,6 @@ class CalendarViewModel @Inject constructor(
     fun saveMood(mood: CharSequence) {
         viewModelScope.launch {
             saveMoodUseCase(today, moods.value, mood)
-            _moods.value = getMoodsUseCase()
         }
     }
 

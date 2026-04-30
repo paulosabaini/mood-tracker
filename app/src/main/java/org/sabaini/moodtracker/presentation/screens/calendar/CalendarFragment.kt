@@ -98,7 +98,6 @@ class CalendarFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.refreshMoods()
     }
 
     private fun onDisplayYear(year: Year) {

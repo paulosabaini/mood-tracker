@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="ink">#E1E2E5</color>
+    <color name="sky">#90CAF9</color>
+    <color name="gray">#BDBDBD</color>
+    <color name="rose">#3D1B1B</color>
+    <color name="red">#FF8A80</color>
+    <color name="day_bg">#2C2C2C</color>
+</resources>

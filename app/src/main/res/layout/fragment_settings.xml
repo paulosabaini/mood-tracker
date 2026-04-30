@@ -17,13 +17,6 @@
         android:padding="16dp"
         tools:context=".presentation.screens.settings.SettingsFragment">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="8dp"
-            android:text="@string/settings_screen"
-            android:textAppearance="?attr/textAppearanceHeadline5" />
-
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/switchDarkMode"
             android:layout_width="match_parent"

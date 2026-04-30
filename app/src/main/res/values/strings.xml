@@ -11,6 +11,8 @@
     <string name="thu">Thu</string>
     <string name="fri">Fri</string>
     <string name="sat">Sat</string>
+    <string name="calendar_screen">Calendar</string>
+    <string name="statistics_screen">Statistics</string>
     <string name="settings_screen">Settings</string>
     <string name="dark_mode">Dark Mode</string>
     <string name="clear_all_data">Clear All Data</string>
