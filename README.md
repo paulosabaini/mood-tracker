@@ -23,12 +23,6 @@ An elegant and minimalist Android application designed to help you track and vis
   <img src="./screenshots/screenshot_04.png" width="23%" />
 </p>
 
-<br>
-
-<p align="center">
-  <img src="./screenshots/mood_tracker.gif" width="30%" />
-</p>
-
 ## 🛠 Tech Stack
 
 *   **Language:** [Kotlin](https://kotlinlang.org/)
